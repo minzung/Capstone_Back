@@ -13,8 +13,7 @@ public class MemberDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberId")
-    private int memberId; // PK
+    private int id; // PK
 
     @Column(name = "studentId")
     private String studentId; // 학번
@@ -28,20 +27,25 @@ public class MemberDTO {
 
     private String nickname; // 닉네임
 
+    @Column(name = "refreshToken")
+    private String refreshToken; // refresh 토큰
+
+    @Column(name = "accessToken")
+    private String accessToken; // access 토큰
+
     @Column(name = "isCertification")
     private boolean isCertification; // 재학생 인증
 
     @Override
     public String toString() {
         return "MemberDTO{" +
-                "memberId=" + memberId +
+                "id=" + id +
                 ", studentId='" + studentId + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", nickname='" + nickname + '\'' +
-                ", isCertification='" + isCertification +
+                ", isCertification=" + isCertification +
                 '}';
     }
-
 }

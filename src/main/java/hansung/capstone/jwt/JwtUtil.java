@@ -9,13 +9,28 @@ import java.util.Date;
 public class JwtUtil {
 
     private String secretKey = "thisIsASuperSecretKeyForJwtSigningAndVerification12345678";
-    private long validityInMilliseconds = 3600000; // 1 hour
+    private long accessValidityInMilliseconds = 3600000 * 7; // 7 hour
+    private long refreshValidityInMilliseconds = 86400000 * 30; // 30 day
 
-    public String createToken(String studentId) {
+    public String createAccessToken(String studentId) {
         Claims claims = Jwts.claims().setSubject(studentId);
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date validity = new Date(now.getTime() + accessValidityInMilliseconds);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+    public String createRefreshToken(String studentId) {
+        Claims claims = Jwts.claims().setSubject(studentId);
+
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + refreshValidityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -37,5 +52,4 @@ public class JwtUtil {
     public String getStudentIdFromToken(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
-
 }
