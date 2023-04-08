@@ -6,7 +6,6 @@ import hansung.capstone.dto.request.LoginRequest;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.StudentIdExistsException;
 import hansung.capstone.jwt.AuthResponse;
-import hansung.capstone.jwt.JwtUtil;
 import hansung.capstone.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
-
-    private final JwtUtil jwtUtil;
 
     private final AuthService authService;
 
