@@ -53,8 +53,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(@RequestParam("refresh_token") String refreshToken) {
         try {
-            String newAccessToken = authService.refreshAccessToken(refreshToken);
-            return ResponseEntity.ok(newAccessToken);
+            return ResponseEntity.ok(authService.refreshAccessToken(refreshToken));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

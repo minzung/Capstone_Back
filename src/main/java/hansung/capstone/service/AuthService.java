@@ -66,8 +66,7 @@ public class AuthService {
     }
 
     public String refreshAccessToken(String refreshToken) {
-        String newAccessToken = jwtUtil.refreshToken(refreshToken);
-        return newAccessToken;
+        return jwtUtil.refreshToken(refreshToken);
     }
 
 }
