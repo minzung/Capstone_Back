@@ -8,6 +8,7 @@ import hansung.capstone.exception.StudentIdExistsException;
 import hansung.capstone.jwt.AuthResponse;
 import hansung.capstone.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,6 +63,11 @@ public class AuthService {
         dao.save(member);
 
         return new AuthResponse(accessToken, refreshToken);
+    }
+
+    public String refreshAccessToken(String refreshToken) {
+        String newAccessToken = jwtUtil.refreshToken(refreshToken);
+        return newAccessToken;
     }
 
 }

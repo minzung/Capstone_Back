@@ -9,8 +9,8 @@ import java.util.Date;
 public class JwtUtil {
 
     private String secretKey = "thisIsASuperSecretKeyForJwtSigningAndVerification12345678";
-    private long accessValidityInMilliseconds = 3600000 * 7; // 7 hour
-    private long refreshValidityInMilliseconds = 86400000 * 30; // 30 day
+    private long accessValidityInMilliseconds = 300000L; // 5 minutes
+    private long refreshValidityInMilliseconds = 86400000L * 60; // 30 day
 
     public String createAccessToken(String studentId) {
         Claims claims = Jwts.claims().setSubject(studentId);
@@ -40,6 +40,15 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String refreshToken(String refreshToken) {
+        if (!validateToken(refreshToken)) {
+            throw new IllegalArgumentException("잘못된 refresh token 입니다.");
+        }
+
+        String studentId = getStudentIdFromToken(refreshToken);
+        return createAccessToken(studentId);
+    }
+
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
@@ -52,4 +61,5 @@ public class JwtUtil {
     public String getStudentIdFromToken(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
+
 }
