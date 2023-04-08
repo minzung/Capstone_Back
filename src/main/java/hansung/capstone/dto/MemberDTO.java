@@ -48,4 +48,5 @@ public class MemberDTO {
                 ", isCertification=" + isCertification +
                 '}';
     }
+
 }
