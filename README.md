@@ -1,4 +1,8 @@
-# 한성메아리
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/108450681/230785106-1a2cbcf2-8686-4f57-bba0-b12b45fb8fb8.png" width="100px;" height="100px" alt=""/>
+</div>
+<br/>
+<h1 align="center">에브리한성</h1>
 <br/>
 
 ## 📝 목차
