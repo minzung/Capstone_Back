@@ -10,11 +10,13 @@ import hansung.capstone.exception.StudentIdNotFoundException;
 import hansung.capstone.jwt.JwtUtil;
 import hansung.capstone.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -91,6 +93,23 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (PasswordNotFoundException e) {
             return ResponseEntity.status(402).body(e.getMessage());
+        }
+    }
+
+    /**
+     * 학생증 업로드
+     * @param studentId
+     * @return ?
+     */
+    @PostMapping("/{studentId}/uploadStudentCard")
+    public ResponseEntity<?> uploadStudentCard(@PathVariable("studentId") String studentId, @RequestParam("file") MultipartFile file) {
+        try {
+            memberService.uploadStudentCard(studentId, file);
+            return ResponseEntity.ok("학생증 사진이 업로드되었습니다.");
+        } catch (StudentIdNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (FileUploadException e) {
+            throw new RuntimeException(e);
         }
     }
 

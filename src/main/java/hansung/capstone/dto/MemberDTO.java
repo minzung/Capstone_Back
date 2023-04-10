@@ -33,6 +33,9 @@ public class MemberDTO {
     @Column(name = "accessToken")
     private String accessToken; // access 토큰
 
+    @Column(name = "studentCardPath")
+    private String studentCardPath; // 학생증 사진 경로
+
     @Column(name = "isCertification")
     private boolean isCertification; // 재학생 인증
 

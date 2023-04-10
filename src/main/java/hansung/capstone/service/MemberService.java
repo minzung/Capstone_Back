@@ -8,9 +8,18 @@ import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.PasswordNotFoundException;
 import hansung.capstone.exception.StudentIdNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 @Service
@@ -20,6 +29,9 @@ public class MemberService {
     private final MemberDAO dao;
 
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${file.upload-dir}")
+    private String fileUploadDir;
 
     public MemberDTO getMemberByStudentId(String studentId) throws StudentIdNotFoundException {
         MemberDTO member = dao.findByStudentId(studentId);
@@ -99,6 +111,36 @@ public class MemberService {
             throw new PasswordNotFoundException("비밀번호를 다시 확인해주세요");
 
         dao.delete(member);
+    }
+
+    /**
+     * 학생증 사진 업로드
+     * @param studentId, file
+     * @return void
+     */
+    @Transactional
+    public void uploadStudentCard(String studentId, MultipartFile file) throws StudentIdNotFoundException, FileUploadException {
+        MemberDTO member = dao.findByStudentId(studentId);
+
+        if (member == null)
+            throw new StudentIdNotFoundException("존재하지 않는 학번입니다.");
+
+        String filePath = saveFile(file, studentId);
+
+        dao.updateStudentCardPath(studentId, filePath);
+    }
+
+    private String saveFile(MultipartFile file, String studentId) throws FileUploadException {
+        // 파일 저장 경로와 파일 이름 지정
+        Path targetLocation = Paths.get(fileUploadDir, studentId+".png");
+
+        try {
+            Files.createDirectories(targetLocation.getParent()); // 디렉토리가 없으면 생성
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            return targetLocation.toString();
+        } catch (IOException e) {
+            throw new FileUploadException("파일 업로드에 실패했습니다.", e);
+        }
     }
 
 }
