@@ -5,6 +5,7 @@ import hansung.capstone.dto.MemberDTO;
 import hansung.capstone.dto.request.LoginRequest;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.StudentIdExistsException;
+import hansung.capstone.exception.StudentIdNotFoundException;
 import hansung.capstone.jwt.AuthResponse;
 import hansung.capstone.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +67,15 @@ public class AuthService {
 
     public String refreshAccessToken(String refreshToken) {
         return jwtUtil.refreshToken(refreshToken);
+    }
+
+    public String findIdByEmail(String email) throws StudentIdNotFoundException {
+        MemberDTO member = dao.findIdByEmail(email);
+
+        if(member == null)
+            throw new StudentIdNotFoundException("존재하지 않는 학번입니다.");
+
+        return member.getStudentId();
     }
 
 }

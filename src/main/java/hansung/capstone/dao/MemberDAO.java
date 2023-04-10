@@ -9,6 +9,8 @@ public interface MemberDAO extends JpaRepository<MemberDTO, Integer> {
 
     MemberDTO findByStudentId(String studentId);
 
-    MemberDTO findByNickname(String email);
+    MemberDTO findByNickname(String nickname);
+
+    MemberDTO findIdByEmail(String email);
 
 }

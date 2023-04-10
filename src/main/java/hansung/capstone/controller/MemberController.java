@@ -1,7 +1,12 @@
 package hansung.capstone.controller;
 
 import hansung.capstone.dto.MemberDTO;
+import hansung.capstone.dto.request.UpdateEmailRequest;
+import hansung.capstone.dto.request.UpdateNicknameRequest;
+import hansung.capstone.dto.request.UpdatePasswordRequest;
 import hansung.capstone.exception.NicknameExistsException;
+import hansung.capstone.exception.PasswordNotFoundException;
+import hansung.capstone.exception.StudentIdNotFoundException;
 import hansung.capstone.jwt.JwtUtil;
 import hansung.capstone.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
-@CrossOrigin(origins = "*", allowedHeaders = "Authorization")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
@@ -35,7 +40,7 @@ public class MemberController {
 
         try {
             return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
-        } catch (IllegalArgumentException e) {
+        } catch (StudentIdNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -46,11 +51,11 @@ public class MemberController {
      * @return ?
      */
     @PatchMapping("/{studentId}/nickname")
-    public ResponseEntity<?> updateNickname(@PathVariable("studentId") String studentId, @RequestBody String newNickname) {
+    public ResponseEntity<?> updateNickname(@PathVariable("studentId") String studentId, @RequestBody UpdateNicknameRequest updateNicknameRequest) {
         try {
-            memberService.updateNickname(studentId, newNickname);
+            memberService.updateNickname(studentId, updateNicknameRequest);
             return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
-        } catch (IllegalArgumentException e) {
+        } catch (StudentIdNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (NicknameExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -58,32 +63,34 @@ public class MemberController {
     }
 
     /**
-     * 비밀번호 변경
-     * @param studentId, newPassword
+     * 이메일 변경
+     * @param studentId, updateEmailRequest
      * @return ?
      */
-    @PatchMapping("/{studentId}/password")
-    public ResponseEntity<?> updatePassword(@PathVariable("studentId") String studentId, @RequestBody String newPassword) {
+    @PatchMapping("/{studentId}/email")
+    public ResponseEntity<?> updateEmail(@PathVariable("studentId") String studentId, @RequestBody UpdateEmailRequest updateEmailRequest) {
         try {
-            memberService.updatePassword(studentId, newPassword);
+            memberService.updateEmail(studentId, updateEmailRequest);
             return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
-        } catch (IllegalArgumentException e) {
+        } catch (StudentIdNotFoundException | PasswordNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     /**
-     * 이메일 변경
-     * @param studentId, newEmail
+     * 회원탈퇴
+     * @param studentId
      * @return ?
      */
-    @PatchMapping("/{studentId}/email")
-    public ResponseEntity<?> updateEmail(@PathVariable("studentId") String studentId, @RequestBody String newEmail) {
+    @DeleteMapping("/{studentId}")
+    public ResponseEntity<?> deleteMember(@PathVariable("studentId") String studentId, @RequestParam String password) {
         try {
-            memberService.updateEmail(studentId, newEmail);
-            return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
-        } catch (IllegalArgumentException e) {
+            memberService.deleteMember(studentId, password);
+            return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
+        } catch (StudentIdNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (PasswordNotFoundException e) {
+            return ResponseEntity.status(402).body(e.getMessage());
         }
     }
 

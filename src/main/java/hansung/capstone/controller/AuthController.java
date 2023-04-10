@@ -1,12 +1,14 @@
 package hansung.capstone.controller;
 
-
 import hansung.capstone.dto.MemberDTO;
 import hansung.capstone.dto.request.LoginRequest;
+import hansung.capstone.dto.request.UpdatePasswordRequest;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.StudentIdExistsException;
+import hansung.capstone.exception.StudentIdNotFoundException;
 import hansung.capstone.jwt.AuthResponse;
 import hansung.capstone.service.AuthService;
+import hansung.capstone.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
+    private final MemberService memberService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody MemberDTO memberDTO) {
@@ -53,6 +57,44 @@ public class AuthController {
             return ResponseEntity.ok(authService.refreshAccessToken(refreshToken));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<?> findIdByEmail(@RequestParam("email") String email) {
+        try {
+            return ResponseEntity.ok(authService.findIdByEmail(email));
+        } catch (StudentIdNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    /**
+     * 비밀번호 변경
+     * @param studentId, newPassword
+     * @return ?
+     */
+    @PatchMapping("/{studentId}/password")
+    public ResponseEntity<?> updatePassword(@PathVariable("studentId") String studentId, @RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        try {
+            memberService.updatePassword(studentId, updatePasswordRequest.getPassword());
+            return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
+        } catch (StudentIdNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    /**
+     * studentId로 정보 얻기
+     * @param studentId
+     * @return MemberDTO
+     */
+    @GetMapping("/{studentId}")
+    public ResponseEntity<MemberDTO> getMember(@PathVariable("studentId") String studentId) {
+        try {
+            return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
+        } catch (StudentIdNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
