@@ -1,13 +1,14 @@
 package hansung.capstone.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @Entity(name = "member")
 public class MemberDTO {
 
@@ -20,7 +21,6 @@ public class MemberDTO {
 
     private String password; // 비밀번호
 
-    @Email
     private String email; // 이메일
 
     private String username; // 이름
@@ -33,11 +33,13 @@ public class MemberDTO {
     @Column(name = "accessToken")
     private String accessToken; // access 토큰
 
-    @Column(name = "studentCardPath")
-    private String studentCardPath; // 학생증 사진 경로
+    @Embedded
+    private Files files; // 인증
 
     @Column(name = "isCertification")
     private boolean isCertification; // 재학생 인증
+
+    public MemberDTO() {}
 
     @Override
     public String toString() {

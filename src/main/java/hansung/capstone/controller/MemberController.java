@@ -3,11 +3,9 @@ package hansung.capstone.controller;
 import hansung.capstone.dto.MemberDTO;
 import hansung.capstone.dto.request.UpdateEmailRequest;
 import hansung.capstone.dto.request.UpdateNicknameRequest;
-import hansung.capstone.dto.request.UpdatePasswordRequest;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.PasswordNotFoundException;
 import hansung.capstone.exception.StudentIdNotFoundException;
-import hansung.capstone.jwt.JwtUtil;
 import hansung.capstone.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -25,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberController {
 
     private final MemberService memberService;
-
-    private final JwtUtil jwtUtil;
 
     /**
      * studentId로 정보 얻기

@@ -2,22 +2,22 @@ package hansung.capstone.service;
 
 import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.MemberDTO;
+import hansung.capstone.dto.Files;
 import hansung.capstone.dto.request.UpdateEmailRequest;
 import hansung.capstone.dto.request.UpdateNicknameRequest;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.PasswordNotFoundException;
 import hansung.capstone.exception.StudentIdNotFoundException;
+import hansung.capstone.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
@@ -28,10 +28,9 @@ public class MemberService {
 
     private final MemberDAO dao;
 
-    private final PasswordEncoder passwordEncoder;
+    private final FileUtil fileUtil;
 
-    @Value("${file.upload-dir}")
-    private String fileUploadDir;
+    private final PasswordEncoder passwordEncoder;
 
     public MemberDTO getMemberByStudentId(String studentId) throws StudentIdNotFoundException {
         MemberDTO member = dao.findByStudentId(studentId);
@@ -45,7 +44,7 @@ public class MemberService {
     /**
      * 닉네임 수정
      * @param studentId, newNickname
-     * @return ?
+     * @return void
      */
     public void updateNickname(String studentId, UpdateNicknameRequest updateNicknameRequest) throws NicknameExistsException, StudentIdNotFoundException {
         MemberDTO member = dao.findByStudentId(studentId);
@@ -64,7 +63,7 @@ public class MemberService {
     /**
      * 비밀번호 변경
      * @param studentId, newPassword
-     * @return ?
+     * @return void
      */
     public void updatePassword(String studentId, String newPassword) throws StudentIdNotFoundException {
         MemberDTO member = dao.findByStudentId(studentId);
@@ -80,7 +79,7 @@ public class MemberService {
     /**
      * 이메일 변경
      * @param studentId, updateEmailRequest
-     * @return ?
+     * @return void
      */
     public void updateEmail(String studentId, UpdateEmailRequest updateEmailRequest) throws PasswordNotFoundException, StudentIdNotFoundException {
         MemberDTO member = dao.findByStudentId(studentId);
@@ -99,7 +98,7 @@ public class MemberService {
     /**
      * 회원탈퇴
      * @param studentId
-     * @return ?
+     * @return void
      */
     public void deleteMember(String studentId, String password) throws StudentIdNotFoundException, PasswordNotFoundException {
         MemberDTO member = dao.findByStudentId(studentId);
@@ -125,22 +124,33 @@ public class MemberService {
         if (member == null)
             throw new StudentIdNotFoundException("존재하지 않는 학번입니다.");
 
-        String filePath = saveFile(file, studentId);
+        // 파일 저장 경로를 지정합니다.
+        String uploadDirectory = "C:/Users/KMJ/Desktop/capstone/src/main/resources/static/certification/";
+        String filename = studentId + ".png";
+        String fileOriName = file.getOriginalFilename();
+        String filePath = uploadDirectory + filename;
 
-        dao.updateStudentCardPath(studentId, filePath);
-    }
-
-    private String saveFile(MultipartFile file, String studentId) throws FileUploadException {
-        // 파일 저장 경로와 파일 이름 지정
-        Path targetLocation = Paths.get(fileUploadDir, studentId+".png");
-
+        InputStream inputStream = null;
         try {
-            Files.createDirectories(targetLocation.getParent()); // 디렉토리가 없으면 생성
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            return targetLocation.toString();
+            // 파일을 지정된 경로에 저장합니다.
+            inputStream = file.getInputStream();
+            fileUtil.copy(inputStream, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new FileUploadException("파일 업로드에 실패했습니다.", e);
+            throw new FileUploadException("파일 업로드 중 오류가 발생했습니다.", e);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+
+        // 파일 정보를 MemberDTO 객체에 설정하고 저장합니다.
+        member.setFiles(new Files(filename, fileOriName, filePath));
+        dao.save(member);
     }
+
 
 }
