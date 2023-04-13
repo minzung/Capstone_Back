@@ -44,8 +44,7 @@ Chat-GPT와 함께하는 커뮤니티 서비스
 
 ## 🛠 프로젝트 아키텍처
 <br/>
-
-<img src="https://user-images.githubusercontent.com/108450681/230784498-1649cf6d-a254-4f41-b7fc-6db6d0cb715a.png" alt=""/><br />
+<img src="https://user-images.githubusercontent.com/108450681/231654845-0d7781ff-1fa4-41e6-b4f5-588ba4824883.png" alt=""/><br />
 <br/>
 <br/>
 
