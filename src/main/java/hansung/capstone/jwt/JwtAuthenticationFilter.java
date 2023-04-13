@@ -1,5 +1,6 @@
 package hansung.capstone.jwt;
 
+import hansung.capstone.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package hansung.capstone.jwt;
+package hansung.capstone.utils;
 
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;

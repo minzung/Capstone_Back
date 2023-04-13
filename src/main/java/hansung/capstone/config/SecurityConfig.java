@@ -1,7 +1,7 @@
 package hansung.capstone.config;
 
 import hansung.capstone.jwt.JwtAuthenticationFilter;
-import hansung.capstone.jwt.JwtUtil;
+import hansung.capstone.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
