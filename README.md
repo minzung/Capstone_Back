@@ -1,7 +1,6 @@
 <div align="center">
   <img src="https://user-images.githubusercontent.com/108450681/230785106-1a2cbcf2-8686-4f57-bba0-b12b45fb8fb8.png" width="100px;" height="100px" alt=""/>
 </div>
-<br/>
 <h1 align="center">에브리한성</h1>
 <br/>
 
@@ -44,8 +43,7 @@ Chat-GPT와 함께하는 커뮤니티 서비스
 
 ## 🛠 프로젝트 아키텍처
 <br/>
-
-<img src="https://user-images.githubusercontent.com/108450681/230784498-1649cf6d-a254-4f41-b7fc-6db6d0cb715a.png" alt=""/><br />
+<img src="https://user-images.githubusercontent.com/108450681/231654845-0d7781ff-1fa4-41e6-b4f5-588ba4824883.png" alt=""/><br />
 <br/>
 <br/>
 
