@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @Embeddable
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Files {
 
     private String filename;
