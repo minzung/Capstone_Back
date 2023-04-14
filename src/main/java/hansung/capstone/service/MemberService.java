@@ -2,7 +2,7 @@ package hansung.capstone.service;
 
 import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.MemberDTO;
-import hansung.capstone.dto.Files;
+import hansung.capstone.dto.item.Files;
 import hansung.capstone.dto.request.UpdateEmailRequest;
 import hansung.capstone.dto.request.UpdateNicknameRequest;
 import hansung.capstone.exception.NicknameExistsException;

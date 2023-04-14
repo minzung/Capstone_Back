@@ -6,7 +6,7 @@ import hansung.capstone.dto.request.UpdatePasswordRequest;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.StudentIdExistsException;
 import hansung.capstone.exception.StudentIdNotFoundException;
-import hansung.capstone.jwt.AuthResponse;
+import hansung.capstone.dto.item.AuthResponse;
 import hansung.capstone.service.AuthService;
 import hansung.capstone.service.MemberService;
 import lombok.RequiredArgsConstructor;

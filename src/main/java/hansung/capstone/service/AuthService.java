@@ -6,7 +6,7 @@ import hansung.capstone.dto.request.LoginRequest;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.StudentIdExistsException;
 import hansung.capstone.exception.StudentIdNotFoundException;
-import hansung.capstone.jwt.AuthResponse;
+import hansung.capstone.dto.item.AuthResponse;
 import hansung.capstone.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;

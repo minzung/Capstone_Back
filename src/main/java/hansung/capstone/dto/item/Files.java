@@ -1,4 +1,4 @@
-package hansung.capstone.dto;
+package hansung.capstone.dto.item;
 
 import lombok.*;
 

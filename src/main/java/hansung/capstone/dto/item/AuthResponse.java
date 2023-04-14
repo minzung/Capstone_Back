@@ -1,4 +1,4 @@
-package hansung.capstone.jwt;
+package hansung.capstone.dto.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

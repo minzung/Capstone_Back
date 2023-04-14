@@ -1,5 +1,6 @@
 package hansung.capstone.dto;
 
+import hansung.capstone.dto.item.Files;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
