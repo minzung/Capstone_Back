@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+
 @Getter
 @Setter
 @Entity(name = "freeboard")
@@ -19,11 +20,11 @@ public class FreeBoardDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id; // PK
 
+    private String studentId; // 작성자
+
     private String title; // 제목
 
     private String content; // 내용
-
-    private String studentId; // 작성자
 
     @Column(name = "isAnonymous")
     private boolean isAnonymous; // 익명여부
@@ -49,6 +50,14 @@ public class FreeBoardDTO {
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+    }
+
+    public boolean getIsAnonymous() {
+        return isAnonymous;
+    }
+
+    public void setIsAnonymous(boolean isAnonymous) {
+        this.isAnonymous = isAnonymous;
     }
 
 }
