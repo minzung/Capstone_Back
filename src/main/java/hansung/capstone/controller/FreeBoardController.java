@@ -69,4 +69,23 @@ public class FreeBoardController {
         return ResponseEntity.ok(freeBoardDTOList);
     }
 
+    /**
+     * 게시글 삭제
+     * @param studentId, id
+     * @return FreeBoardDTO
+     */
+    @DeleteMapping("/{studentId}/{id}")
+    public ResponseEntity<?> deleteFreeBoard(@PathVariable("studentId") String studentId, @PathVariable("id") int id) {
+        try {
+            freeBoardService.deleteFreeBoard(studentId, id);
+            return ResponseEntity.ok("게시글이 삭제되었습니다.");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 게시글을 삭제할 수 있습니다.");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("삭제할 게시글이 존재하지 않습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
+        }
+    }
+
 }

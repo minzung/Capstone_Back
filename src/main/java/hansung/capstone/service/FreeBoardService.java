@@ -108,4 +108,25 @@ public class FreeBoardService {
     public List<FreeBoardDTO> getAllPosts() {
         return dao.findAll();
     }
+
+    /**
+     * 게시글 삭제
+     * @param studentId, id
+     */
+    public void deleteFreeBoard(String studentId, int id) {
+        Optional<FreeBoardDTO> originalFreeBoardOptional = dao.findById(id);
+
+        if (originalFreeBoardOptional.isPresent()) {
+            FreeBoardDTO originalFreeBoard = originalFreeBoardOptional.get();
+
+            if (originalFreeBoard.getStudentId().equals(studentId)) {
+                dao.deleteById(id);
+            } else {
+                throw new IllegalStateException("작성자만 게시글을 삭제할 수 있습니다.");
+            }
+        } else {
+            throw new NoSuchElementException("삭제할 게시글이 존재하지 않습니다.");
+        }
+    }
+
 }
