@@ -93,6 +93,7 @@ public class FreeBoardService {
         // 게시글을 수정합니다.
         freeBoard.setTitle(updateFreeBoardRequest.getTitle());
         freeBoard.setContent(updateFreeBoardRequest.getContent());
+        freeBoard.setIsAnonymous(updateFreeBoardRequest.isAnonymous());
 
         // 수정된 게시글을 저장합니다.
         return dao.save(freeBoard);
