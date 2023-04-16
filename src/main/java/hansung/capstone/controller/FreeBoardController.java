@@ -1,6 +1,7 @@
 package hansung.capstone.controller;
 
 import hansung.capstone.dto.FreeBoardDTO;
+import hansung.capstone.dto.request.UpdateFreeBoardRequest;
 import hansung.capstone.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,14 +44,14 @@ public class FreeBoardController {
 
     /**
      * 게시글 수정
-     * @param freeBoardDTO
+     * @param updateFreeBoardRequest
      * @return FreeBoardDTO
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateFreeBoard(@PathVariable int id, @RequestBody FreeBoardDTO freeBoardDTO) {
+    public ResponseEntity<?> updateFreeBoard(@PathVariable int id, @RequestBody UpdateFreeBoardRequest updateFreeBoardRequest) {
         try {
-            freeBoardDTO.setId(id);
-            return ResponseEntity.ok(freeBoardService.updateFreeBoard(freeBoardDTO));
+            updateFreeBoardRequest.setId(id);
+            return ResponseEntity.ok(freeBoardService.updateFreeBoard(updateFreeBoardRequest));
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 게시글을 수정할 수 있습니다.");
         } catch (NoSuchElementException e) {

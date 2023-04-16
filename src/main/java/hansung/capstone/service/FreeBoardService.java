@@ -5,6 +5,7 @@ import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.FreeBoardDTO;
 import hansung.capstone.dto.MemberDTO;
 import hansung.capstone.dto.item.Files;
+import hansung.capstone.dto.request.UpdateFreeBoardRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,25 +71,20 @@ public class FreeBoardService {
 
     /**
      * 게시글 수정
-     * @param freeBoardDTO
+     * @param updateFreeBoardRequest
      * @param freeBoardDTO
      */
-    public FreeBoardDTO updateFreeBoard(FreeBoardDTO freeBoardDTO) {
-        Optional<FreeBoardDTO> originalFreeBoardOptional = dao.findById(freeBoardDTO.getId());
+    public FreeBoardDTO updateFreeBoard(UpdateFreeBoardRequest updateFreeBoardRequest) {
+        // 업데이트할 게시글을 가져옵니다.
+        FreeBoardDTO freeBoard = dao.findById(updateFreeBoardRequest.getId())
+                .orElseThrow(NoSuchElementException::new);
 
-        if (originalFreeBoardOptional.isPresent()) {
-            FreeBoardDTO originalFreeBoard = originalFreeBoardOptional.get();
+        // 게시글을 수정합니다.
+        freeBoard.setTitle(updateFreeBoardRequest.getTitle());
+        freeBoard.setContent(updateFreeBoardRequest.getContent());
 
-            if (originalFreeBoard.getStudentId().equals(freeBoardDTO.getStudentId())) {
-                dao.save(freeBoardDTO);
-            } else {
-                throw new IllegalStateException("작성자만 게시글을 수정할 수 있습니다.");
-            }
-        } else {
-            throw new NoSuchElementException("수정할 게시글이 존재하지 않습니다.");
-        }
-
-        return freeBoardDTO;
+        // 수정된 게시글을 저장합니다.
+        return dao.save(freeBoard);
     }
 
     /**
