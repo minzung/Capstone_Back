@@ -1,7 +1,9 @@
 package hansung.capstone.service;
 
 import hansung.capstone.dao.FreeBoardDAO;
+import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.FreeBoardDTO;
+import hansung.capstone.dto.MemberDTO;
 import hansung.capstone.dto.item.Files;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FreeBoardService {
 
+    private final MemberDAO memberDAO;
+
     private final FreeBoardDAO dao;
 
     // 게시글 등록
     public void createPost(FreeBoardDTO freeBoardDTO) {
+        MemberDTO member = memberDAO.findByStudentId(freeBoardDTO.getStudentId());
+
+        freeBoardDTO.setNickname(member.getNickname());
+
         MultipartFile imageFile = freeBoardDTO.getImageFile();
 
         // 파일이 존재하고, 비어있지 않다면

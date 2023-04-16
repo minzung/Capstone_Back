@@ -20,7 +20,10 @@ public class FreeBoardDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id; // PK
 
+    @Column(name = "studentId")
     private String studentId; // 작성자
+
+    private String nickname; // 작성자 닉네임
 
     private String title; // 제목
 
@@ -41,6 +44,10 @@ public class FreeBoardDTO {
     @Transient // 데이터베이스에 저장되지 않도록 설정
     private MultipartFile imageFile;
 
+//    private int like; // 좋아요 수
+//
+//    private int comment; // 댓글 수
+
     @PrePersist
     public void onCreate() {
         this.createdAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
@@ -50,14 +57,6 @@ public class FreeBoardDTO {
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-    }
-
-    public boolean getIsAnonymous() {
-        return isAnonymous;
-    }
-
-    public void setIsAnonymous(boolean isAnonymous) {
-        this.isAnonymous = isAnonymous;
     }
 
 }
