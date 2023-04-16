@@ -3,6 +3,7 @@ package hansung.capstone.controller;
 import hansung.capstone.dto.MemberDTO;
 import hansung.capstone.dto.request.LoginRequest;
 import hansung.capstone.dto.request.UpdatePasswordRequest;
+import hansung.capstone.exception.EmailExistsException;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.StudentIdExistsException;
 import hansung.capstone.exception.StudentIdNotFoundException;
@@ -32,10 +33,8 @@ public class AuthController {
         try {
             authService.register(memberDTO);
             return ResponseEntity.status(200).body("회원가입 성공!");
-        } catch (StudentIdExistsException e) {
+        } catch (StudentIdExistsException | NicknameExistsException | EmailExistsException e) {
             return ResponseEntity.status(401).body(e.getMessage());
-        } catch (NicknameExistsException e) {
-            return ResponseEntity.status(402).body(e.getMessage());
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -3,6 +3,7 @@ package hansung.capstone.service;
 import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.MemberDTO;
 import hansung.capstone.dto.request.LoginRequest;
+import hansung.capstone.exception.EmailExistsException;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.StudentIdExistsException;
 import hansung.capstone.exception.StudentIdNotFoundException;
@@ -25,15 +26,19 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public MemberDTO register(MemberDTO memberDTO) throws StudentIdExistsException, NicknameExistsException {
+    public MemberDTO register(MemberDTO memberDTO) throws StudentIdExistsException, NicknameExistsException, EmailExistsException {
         MemberDTO member = dao.findByStudentId(memberDTO.getStudentId());
 
         if (member != null) {
-            throw new StudentIdExistsException("이미 존재하는 학번입니다.");
+            throw new StudentIdExistsException("이미 가입된 학번입니다.");
         }
 
         if (dao.findByNickname(memberDTO.getNickname()) != null) {
             throw new NicknameExistsException("이미 사용중인 닉네임입니다.");
+        }
+
+        if (dao.findByEmail(memberDTO.getEmail()) != null) {
+            throw new EmailExistsException("이미 가입된 이메일입니다.");
         }
 
         // 비밀번호 암호화
