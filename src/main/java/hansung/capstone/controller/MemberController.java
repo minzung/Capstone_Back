@@ -31,11 +31,6 @@ public class MemberController {
      */
     @GetMapping("/{studentId}")
     public ResponseEntity<MemberDTO> getMember(@PathVariable("studentId") String studentId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // 인증된 사용자의 정보를 가져오기
-        if (authentication == null || !studentId.equals(authentication.getName())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
         try {
             return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
         } catch (StudentIdNotFoundException e) {
