@@ -38,14 +38,15 @@ public class FreeBoardDTO {
     @Column(name = "updatedAt")
     private Timestamp updatedAt; // 수정일
 
+    @Column(name = "countLike")
+    private int countLike; // 좋아요 수
+
     @Embedded
     private Files files; // 파일
 
     @Transient // 데이터베이스에 저장되지 않도록 설정
     private MultipartFile imageFile;
 
-//    private int like; // 좋아요 수
-//
 //    private int comment; // 댓글 수
 
     @PrePersist
@@ -57,6 +58,14 @@ public class FreeBoardDTO {
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+    }
+
+    public boolean getIsAnonymous() {
+        return isAnonymous;
+    }
+
+    public void setIsAnonymous(boolean anonymous) {
+        isAnonymous = anonymous;
     }
 
 }
