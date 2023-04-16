@@ -70,17 +70,16 @@ public class FreeBoardService {
 
     /**
      * 게시글 수정
-     *
-     * @param studentId
+     * @param freeBoardDTO
      * @param freeBoardDTO
      */
-    public FreeBoardDTO updateFreeBoard(String studentId, FreeBoardDTO freeBoardDTO) {
+    public FreeBoardDTO updateFreeBoard(FreeBoardDTO freeBoardDTO) {
         Optional<FreeBoardDTO> originalFreeBoardOptional = dao.findById(freeBoardDTO.getId());
 
         if (originalFreeBoardOptional.isPresent()) {
             FreeBoardDTO originalFreeBoard = originalFreeBoardOptional.get();
 
-            if (originalFreeBoard.getStudentId().equals(studentId)) {
+            if (originalFreeBoard.getStudentId().equals(freeBoardDTO.getStudentId())) {
                 dao.save(freeBoardDTO);
             } else {
                 throw new IllegalStateException("작성자만 게시글을 수정할 수 있습니다.");

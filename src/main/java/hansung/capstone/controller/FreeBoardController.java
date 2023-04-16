@@ -46,10 +46,11 @@ public class FreeBoardController {
      * @param freeBoardDTO
      * @return FreeBoardDTO
      */
-    @PatchMapping("/{studentId}/edit")
-    public ResponseEntity<?> updateFreeBoard(@PathVariable("studentId") String studentId, @RequestBody FreeBoardDTO freeBoardDTO) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateFreeBoard(@PathVariable int id, @RequestBody FreeBoardDTO freeBoardDTO) {
         try {
-            return ResponseEntity.ok(freeBoardService.updateFreeBoard(studentId, freeBoardDTO));
+            freeBoardDTO.setId(id);
+            return ResponseEntity.ok(freeBoardService.updateFreeBoard(freeBoardDTO));
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 게시글을 수정할 수 있습니다.");
         } catch (NoSuchElementException e) {
