@@ -6,8 +6,14 @@ import hansung.capstone.dto.FreeBoardDTO;
 import hansung.capstone.dto.MemberDTO;
 import hansung.capstone.dto.item.Files;
 import hansung.capstone.dto.request.UpdateFreeBoardRequest;
+import hansung.capstone.dto.request.UpdateLikeRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -90,6 +96,15 @@ public class FreeBoardService {
 
         // 수정된 게시글을 저장합니다.
         return dao.save(freeBoard);
+    }
+
+    /**
+     *
+     * @param id, countLike
+     */
+    public void updateLike(int id, int countLike) {
+        FreeBoardDTO board = dao.getPostById(id);
+        board.setCountLike(countLike);
     }
 
     /**

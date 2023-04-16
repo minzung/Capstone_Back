@@ -2,6 +2,7 @@ package hansung.capstone.controller;
 
 import hansung.capstone.dto.FreeBoardDTO;
 import hansung.capstone.dto.request.UpdateFreeBoardRequest;
+import hansung.capstone.dto.request.UpdateLikeRequest;
 import hansung.capstone.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -56,6 +57,21 @@ public class FreeBoardController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 게시글을 수정할 수 있습니다.");
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("수정할 게시글이 존재하지 않습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
+        }
+    }
+
+    /**
+     * 좋아요 수
+     * @param id, updateLikeRequest
+     * @return FreeBoardDTO
+     */
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateLike(@PathVariable int id, @RequestBody UpdateLikeRequest updateLikeRequest) {
+        try {
+            freeBoardService.updateLike(id, updateLikeRequest.getCountLike());
+            return ResponseEntity.ok("좋아용");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
         }
