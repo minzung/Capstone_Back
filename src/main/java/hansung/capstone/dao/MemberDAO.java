@@ -16,6 +16,8 @@ public interface MemberDAO extends JpaRepository<MemberDTO, Integer> {
 
     MemberDTO findIdByEmail(String email);
 
+    String findByEmail(String email);
+
     @Modifying
     @Query("UPDATE member m SET m.files.fileUrl = :fileUrl WHERE m.studentId = :studentId")
     void updateStudentCardPath(@Param("studentId") String studentId, @Param("fileUrl") String fileUrl);
