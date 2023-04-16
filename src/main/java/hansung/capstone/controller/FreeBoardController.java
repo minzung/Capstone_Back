@@ -3,11 +3,13 @@ package hansung.capstone.controller;
 import hansung.capstone.dto.FreeBoardDTO;
 import hansung.capstone.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,6 +39,24 @@ public class FreeBoardController {
     public ResponseEntity<FreeBoardDTO> getPostById(@PathVariable int id) {
         FreeBoardDTO freeBoardDTO = freeBoardService.getPostById(id);
         return ResponseEntity.ok(freeBoardDTO);
+    }
+
+    /**
+     * 게시글 수정
+     * @param freeBoardDTO
+     * @return FreeBoardDTO
+     */
+    @PatchMapping("/{studentId}/edit")
+    public ResponseEntity<?> updateFreeBoard(@PathVariable("studentId") String studentId, @RequestBody FreeBoardDTO freeBoardDTO) {
+        try {
+            return ResponseEntity.ok(freeBoardService.updateFreeBoard(studentId, freeBoardDTO));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 게시글을 수정할 수 있습니다.");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("수정할 게시글이 존재하지 않습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 내부 오류가 발생했습니다.");
+        }
     }
 
     /**
