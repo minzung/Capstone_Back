@@ -9,8 +9,6 @@ public class UpdateFreeBoardRequest {
 
     private int id;
 
-    private String studentId;
-
     private String title;
 
     private String content;

@@ -74,10 +74,15 @@ public class FreeBoardService {
      * @param updateFreeBoardRequest
      * @param freeBoardDTO
      */
-    public FreeBoardDTO updateFreeBoard(UpdateFreeBoardRequest updateFreeBoardRequest) {
+    public FreeBoardDTO updateFreeBoard(String studentId, UpdateFreeBoardRequest updateFreeBoardRequest) throws IllegalAccessException {
         // 업데이트할 게시글을 가져옵니다.
         FreeBoardDTO freeBoard = dao.findById(updateFreeBoardRequest.getId())
                 .orElseThrow(NoSuchElementException::new);
+
+        // studentId가 일치하는지 확인합니다.
+        if (!freeBoard.getStudentId().equals(studentId)) {
+            throw new IllegalAccessException("게시글을 수정할 권한이 없습니다.");
+        }
 
         // 게시글을 수정합니다.
         freeBoard.setTitle(updateFreeBoardRequest.getTitle());
