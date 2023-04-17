@@ -24,4 +24,10 @@ public class HeartController {
         heartService.getLike(studentId, freeboardId);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteLike(@RequestParam("studentId") String studentId, @RequestParam("freeboardId") int freeboardId) {
+        heartService.deleteLike(studentId, freeboardId);
+        return ResponseEntity.ok().build();
+    }
 }
