@@ -69,11 +69,11 @@ public class FreeBoardService {
     /**
      * 게시글 수정
      * @param updateFreeBoardRequest
-     * @param freeBoardDTO
+     * @param FreeBoardDTO
      */
     public FreeBoardDTO updateFreeBoard(String studentId, UpdateFreeBoardRequest updateFreeBoardRequest) throws IllegalAccessException {
         // 업데이트할 게시글을 가져옵니다.
-        FreeBoardDTO freeBoard = dao.findById(updateFreeBoardRequest.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid freeboardId"));
+        FreeBoardDTO freeBoard = dao.findById(updateFreeBoardRequest.getId());
 
         // studentId가 일치하는지 확인합니다.
         if (!freeBoard.getStudentId().equals(studentId)) {
@@ -94,7 +94,7 @@ public class FreeBoardService {
      * @param id, countLike
      */
     public void updateLike(int id, int countLike) {
-        FreeBoardDTO board = dao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid freeboardId"));
+        FreeBoardDTO board = dao.findById(id);
         board.setCountLike(countLike);
     }
 
@@ -104,7 +104,7 @@ public class FreeBoardService {
      * @return FreeBoardDTO
      */
     public FreeBoardDTO getPostById(int id) {
-        return dao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid freeboardId"));
+        return dao.findById(id);
     }
 
     /**
@@ -120,7 +120,7 @@ public class FreeBoardService {
      * @param studentId, id
      */
     public void deleteFreeBoard(String studentId, int id) {
-        FreeBoardDTO freeboard = dao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid freeboardId"));
+        FreeBoardDTO freeboard = dao.findById(id);
 
         if(!Objects.equals(freeboard.getStudentId(), studentId)) {
             throw new IllegalStateException("작성자만 게시글을 삭제할 수 있습니다.");
