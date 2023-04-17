@@ -3,6 +3,7 @@ package hansung.capstone.dto;
 import hansung.capstone.dto.item.Files;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -18,7 +19,8 @@ public class FreeBoardDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; // PK
+    @Column(name = "freeboardId")
+    private int freeboardId; // PK
 
     @Column(name = "studentId")
     private String studentId; // 작성자
@@ -38,6 +40,7 @@ public class FreeBoardDTO {
     @Column(name = "updatedAt")
     private Timestamp updatedAt; // 수정일
 
+    @ColumnDefault("0")
     @Column(name = "countLike")
     private int countLike; // 좋아요 수
 
