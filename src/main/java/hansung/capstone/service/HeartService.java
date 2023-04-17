@@ -26,18 +26,12 @@ public class HeartService {
 
         HeartDTO heart = heartDAO.findByMemberAndBoard(member, board);
 
-        if (heart != null) { // 좋아요가 이미 등록되어 있을 경우
-            heart.setIsFilled(true);
-            board.setCountLike(board.getCountLike() + 1);
-            heartDAO.save(heart);
-        } else { // 좋아요가 등록되어 있지 않은 경우
-            heart = new HeartDTO();
-            heart.setMember(member);
-            heart.setBoard(board);
-            heart.setIsFilled(true);
-            board.setCountLike(board.getCountLike() + 1);
-            heartDAO.save(heart);
-        }
+        heart = new HeartDTO();
+        heart.setMember(member);
+        heart.setBoard(board);
+        heart.setIsFilled(true);
+        board.setCountLike(board.getCountLike() + 1);
+        heartDAO.save(heart);
     }
 
     public LikeResponse getLike(String studentId, int freeboardId) {
