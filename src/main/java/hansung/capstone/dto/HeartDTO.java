@@ -5,8 +5,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.LAZY;
-
 @Getter
 @Setter
 @Entity(name = "heart")
@@ -14,16 +12,13 @@ public class HeartDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "heartId")
-    private int heartId;
+    private int id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "memberId")
-    private MemberDTO member;
+    @Column(name= "studentId")
+    private String studentId;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "freeboardId")
-    private FreeBoardDTO board;
+    @Column(name= "boardId")
+    private int boardId;
 
     @Column(name = "isFilled")
     private boolean isFilled;

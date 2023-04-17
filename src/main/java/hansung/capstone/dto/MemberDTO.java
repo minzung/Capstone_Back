@@ -13,8 +13,7 @@ public class MemberDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberId")
-    private int memberId; // PK
+    private int id; // PK
 
     @Column(name = "studentId")
     private String studentId; // 학번

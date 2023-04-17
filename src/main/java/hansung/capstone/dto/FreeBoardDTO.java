@@ -19,8 +19,7 @@ public class FreeBoardDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "freeboardId")
-    private int freeboardId; // PK
+    private int id; // PK
 
     @Column(name = "studentId")
     private String studentId; // 작성자
