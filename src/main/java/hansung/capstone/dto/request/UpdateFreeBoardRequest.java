@@ -15,4 +15,12 @@ public class UpdateFreeBoardRequest {
 
     private boolean isAnonymous;
 
+    public boolean getIsAnonymous() {
+        return isAnonymous;
+    }
+
+    public void setIsAnonymous(boolean anonymous) {
+        isAnonymous = anonymous;
+    }
+
 }

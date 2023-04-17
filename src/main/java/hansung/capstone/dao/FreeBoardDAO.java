@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FreeBoardDAO extends JpaRepository<FreeBoardDTO, Integer>  {
 
-    FreeBoardDTO getPostById(int id);
+    FreeBoardDTO findByFreeboardId(int freeboardId);
 
 }
