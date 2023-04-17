@@ -1,5 +1,6 @@
 package hansung.capstone.controller;
 
+import hansung.capstone.dto.response.LikeResponse;
 import hansung.capstone.service.HeartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,21 +14,21 @@ public class HeartController {
 
     private final HeartService heartService;
 
-    @PostMapping("")
-    public ResponseEntity<?> addLike(@RequestParam("studentId") String studentId, @RequestParam("freeboardId") int freeboardId) {
-        heartService.addLike(studentId, freeboardId);
+    @PostMapping("/{studentId}/{id}")
+    public ResponseEntity<?> addLike(@PathVariable String studentId, @PathVariable int id) {
+        heartService.addLike(studentId, id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{studentId}/{freeboardId}")
-    public ResponseEntity<?> getLike(@PathVariable String studentId, @PathVariable int freeboardId) {
-        heartService.getLike(studentId, freeboardId);
-        return ResponseEntity.ok().build();
+    @GetMapping("/{studentId}/{id}")
+    public ResponseEntity<LikeResponse> getLike(@PathVariable String studentId, @PathVariable int id) {
+        LikeResponse like = heartService.getLike(studentId, id);
+        return ResponseEntity.ok().body(like);
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> deleteLike(@RequestParam("studentId") String studentId, @RequestParam("freeboardId") int freeboardId) {
-        heartService.deleteLike(studentId, freeboardId);
+    @DeleteMapping("/{studentId}/{id}")
+    public ResponseEntity<?> deleteLike(@PathVariable String studentId, @PathVariable int id) {
+        heartService.deleteLike(studentId, id);
         return ResponseEntity.ok().build();
     }
 }

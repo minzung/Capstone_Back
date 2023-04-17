@@ -20,36 +20,40 @@ public class HeartService {
 
     private final FreeBoardDAO freeBoardDAO;
 
-    public void addLike(String studentId, int freeboardId) {
-        MemberDTO member = memberDAO.findByStudentId(studentId);
-        FreeBoardDTO board = freeBoardDAO.findById(freeboardId).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다. id: " + freeboardId));
+    public void addLike(String studentId, int id) {
+        FreeBoardDTO board = freeBoardDAO.findById(id);
 
-        HeartDTO heart = heartDAO.findByMemberAndBoard(member, board);
-
-        heart = new HeartDTO();
-        heart.setMember(member);
-        heart.setBoard(board);
+        HeartDTO heart = new HeartDTO();
+        heart.setStudentId(studentId);
+        heart.setBoardId(id);
         heart.setIsFilled(true);
+
         board.setCountLike(board.getCountLike() + 1);
+
         heartDAO.save(heart);
     }
 
-    public LikeResponse getLike(String studentId, int freeboardId) {
-        MemberDTO member = memberDAO.findByStudentId(studentId);
-        FreeBoardDTO board = freeBoardDAO.findById(freeboardId).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다. id: " + freeboardId));
-        HeartDTO heart = heartDAO.findByMemberAndBoard(member, board);
+    public LikeResponse getLike(String studentId, int id) {
+        FreeBoardDTO board = freeBoardDAO.findById(id);
+        HeartDTO heart = heartDAO.findByMemberAndBoard(studentId, id);
+
+        System.out.println("=====" + heart);
 
         LikeResponse response = new LikeResponse();
         response.setCountLike(board.getCountLike());
-        response.setIsFilled(heart.getIsFilled());
+
+        if (heart == null || board.getCountLike() == 0) {
+            response.setIsFilled(false);
+        } else {
+            response.setIsFilled(heart.getIsFilled());
+        }
 
         return response;
     }
 
-    public void deleteLike(String studentId, int freeboardId) {
-        MemberDTO member = memberDAO.findByStudentId(studentId);
-        FreeBoardDTO board = freeBoardDAO.findById(freeboardId).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다. id: " + freeboardId));
-        HeartDTO heart = heartDAO.findByMemberAndBoard(member, board);
+    public void deleteLike(String studentId, int id) {
+        FreeBoardDTO board = freeBoardDAO.findById(id);
+        HeartDTO heart = heartDAO.findByMemberAndBoard(studentId, id);
 
         board.setCountLike(board.getCountLike() - 1);
         heartDAO.delete(heart);
