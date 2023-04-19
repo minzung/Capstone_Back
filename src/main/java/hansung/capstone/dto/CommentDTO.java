@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +31,36 @@ public class CommentDTO {
     @Column(name = "isAnonymous")
     private boolean isAnonymous; // 익명여부
 
+    @Column(name = "createdAt")
+    private Timestamp createdAt; // 동록일
+
+    @Column(name = "updatedAt")
+    private Timestamp updatedAt; // 수정일
+
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private CommentDTO parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentDTO> replies = new ArrayList<>();
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        this.updatedAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+    }
+
+    public boolean getIsAnonymous() {
+        return isAnonymous;
+    }
+
+    public void setIsAnonymous(boolean anonymous) {
+        isAnonymous = anonymous;
+    }
 
 }
