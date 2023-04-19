@@ -43,13 +43,15 @@ public class FreeBoardDTO {
     @Column(name = "countLike")
     private int countLike; // 좋아요 수
 
+    @ColumnDefault("0")
+    @Column(name = "countComment")
+    private int countComment; // 댓글 수
+
     @Embedded
     private Files files; // 파일
 
     @Transient // 데이터베이스에 저장되지 않도록 설정
     private MultipartFile imageFile;
-
-//    private int comment; // 댓글 수
 
     @PrePersist
     public void onCreate() {

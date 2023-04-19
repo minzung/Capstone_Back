@@ -1,9 +1,10 @@
 package hansung.capstone.service;
 
-import hansung.capstone.dao.CommentDAO;
+import hansung.capstone.dao.FreeCommentDAO;
 import hansung.capstone.dao.FreeBoardDAO;
 import hansung.capstone.dao.MemberDAO;
-import hansung.capstone.dto.CommentDTO;
+import hansung.capstone.dto.FreeBoardDTO;
+import hansung.capstone.dto.FreeCommentDTO;
 import hansung.capstone.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,40 +20,38 @@ public class CommentService {
 
     private final FreeBoardDAO freeBoardDAO;
 
-    private final CommentDAO commentDAO;
+    private final FreeCommentDAO commentDAO;
 
-    public CommentDTO saveComment(int id ,CommentDTO comment) {
+    public FreeCommentDTO saveComment(int boardId , FreeCommentDTO comment) {
         MemberDTO student = memberDAO.findByStudentId(comment.getStudentId());
+        FreeBoardDTO board = freeBoardDAO.findById(boardId);
 
-        comment.setBoardId(id);
+        comment.setBoardId(boardId);
         comment.setNickname(student.getNickname());
         comment.setIsAnonymous(comment.getIsAnonymous());
+
+        board.setCountComment(board.getCountComment() + 1);
+        freeBoardDAO.save(board);
 
         return commentDAO.save(comment);
     }
 
-    public CommentDTO getCommentById(int id) {
-        return commentDAO.findById(id).orElseThrow(() -> new IllegalArgumentException("Comment not found"));
-    }
+    public void deleteComment(int boardId, int id) {
+        FreeBoardDTO board = freeBoardDAO.findById(boardId);
+        board.setCountComment(board.getCountComment() - 1);
+        freeBoardDAO.save(board);
 
-    public CommentDTO updateComment(int id, CommentDTO newComment) {
-        CommentDTO oldComment = getCommentById(id);
-        oldComment.setContent(newComment.getContent());
-        return commentDAO.save(oldComment);
-    }
-
-    public void deleteComment(int id) {
         commentDAO.deleteById(id);
     }
 
-    public List<CommentDTO> getAllCommentsByBoardId(int boardId) {
+    public List<FreeCommentDTO> getAllCommentsByBoardId(int boardId) {
         return commentDAO.findAllByBoardId(boardId);
     }
 
-    public CommentDTO createReply(int parentId, CommentDTO reply) {
-        Optional<CommentDTO> parentComment = commentDAO.findById(parentId);
+    public FreeCommentDTO createReply(int parentId, FreeCommentDTO reply) {
+        Optional<FreeCommentDTO> parentComment = commentDAO.findById(parentId);
         if (parentComment.isPresent()) {
-            CommentDTO parent = parentComment.get();
+            FreeCommentDTO parent = parentComment.get();
             reply.setParent(parent);
             return commentDAO.save(reply);
         } else {
@@ -60,22 +59,8 @@ public class CommentService {
         }
     }
 
-    public CommentDTO updateReply(int commentId, CommentDTO updatedComment) {
-        Optional<CommentDTO> existingComment = commentDAO.findById(commentId);
-        if (existingComment.isPresent()) {
-            CommentDTO comment = existingComment.get();
-            comment.setStudentId(updatedComment.getStudentId());
-            comment.setNickname(updatedComment.getNickname());
-            comment.setContent(updatedComment.getContent());
-            comment.setIsAnonymous(updatedComment.getIsAnonymous());
-            return commentDAO.save(comment);
-        } else {
-            return null;
-        }
-    }
-
     public boolean deleteReply(int commentId) {
-        Optional<CommentDTO> existingComment = commentDAO.findById(commentId);
+        Optional<FreeCommentDTO> existingComment = commentDAO.findById(commentId);
         if (existingComment.isPresent()) {
             commentDAO.deleteById(commentId);
             return true;

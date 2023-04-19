@@ -12,8 +12,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity(name = "comment")
-public class CommentDTO {
+@Entity(name = "freecomment")
+public class FreeCommentDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id; // PK
@@ -38,11 +38,11 @@ public class CommentDTO {
     private Timestamp updatedAt; // 수정일
 
     @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private CommentDTO parent;
+    @JoinColumn(name = "parentId")
+    private FreeCommentDTO parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommentDTO> replies = new ArrayList<>();
+    private List<FreeCommentDTO> replies = new ArrayList<>();
 
     @PrePersist
     public void onCreate() {
