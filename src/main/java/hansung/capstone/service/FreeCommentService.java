@@ -38,7 +38,6 @@ public class FreeCommentService {
     public void deleteComment(int boardId, int id) {
         FreeBoardDTO board = freeBoardDAO.findById(boardId);
         board.setCountComment(board.getCountComment() - 1);
-        freeBoardDAO.save(board);
 
         commentDAO.deleteById(id);
     }
