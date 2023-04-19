@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class FreeCommentService {
 
     private final MemberDAO memberDAO;
 
@@ -31,7 +31,6 @@ public class CommentService {
         comment.setIsAnonymous(comment.getIsAnonymous());
 
         board.setCountComment(board.getCountComment() + 1);
-        freeBoardDAO.save(board);
 
         return commentDAO.save(comment);
     }

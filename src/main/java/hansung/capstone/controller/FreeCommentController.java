@@ -1,7 +1,7 @@
 package hansung.capstone.controller;
 
 import hansung.capstone.dto.FreeCommentDTO;
-import hansung.capstone.service.CommentService;
+import hansung.capstone.service.FreeCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FreeCommentController {
 
-    private final CommentService commentService;
+    private final FreeCommentService commentService;
 
     /**
      * 댓글 저장
