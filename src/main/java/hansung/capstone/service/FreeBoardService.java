@@ -69,7 +69,7 @@ public class FreeBoardService {
     /**
      * 게시글 수정
      * @param updateFreeBoardRequest
-     * @param FreeBoardDTO
+     * @return FreeBoardDTO
      */
     public FreeBoardDTO updateFreeBoard(String studentId, UpdateFreeBoardRequest updateFreeBoardRequest) throws IllegalAccessException {
         // 업데이트할 게시글을 가져옵니다.
@@ -87,15 +87,6 @@ public class FreeBoardService {
 
         // 수정된 게시글을 저장합니다.
         return dao.save(freeBoard);
-    }
-
-    /**
-     *
-     * @param id, countLike
-     */
-    public void updateLike(int id, int countLike) {
-        FreeBoardDTO board = dao.findById(id);
-        board.setCountLike(countLike);
     }
 
     /**
