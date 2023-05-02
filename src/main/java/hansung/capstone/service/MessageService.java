@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class MessageService {
         return messageDAO.save(messageDTO);
     }
 
-    public List<MessageDTO> getMessage(int studentId) throws NoSuchElementException {
+    public List<MessageDTO> getAllMessage(String studentId) throws NoSuchElementException {
         List<MessageDTO> messages = messageDAO.findByStudentId(studentId);
         if (messages.isEmpty()) {
             throw new NoSuchElementException("No messages found for studentId: " + studentId);
@@ -26,8 +27,13 @@ public class MessageService {
         return messages;
     }
 
+    public Optional<MessageDTO> getMessageById(int id) {
+        return messageDAO.findById(id);
+    }
+
     public MessageDTO deleteMessage(int studentId) {
         return messageDAO.deleteByStduentId(studentId);
     }
+
 
 }
