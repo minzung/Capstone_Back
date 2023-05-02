@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HeartDAO extends JpaRepository<HeartDTO, Integer> {
 
-    @Query("SELECT h " + "FROM heart h " + "WHERE h.studentId = :studentId " + "AND h.boardId = :boardId")
+    @Query("SELECT h FROM heart h WHERE h.studentId = :studentId AND h.boardId = :boardId")
     HeartDTO findByMemberAndBoard(String studentId, int boardId);
 
 }
