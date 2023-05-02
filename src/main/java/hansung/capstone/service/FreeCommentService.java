@@ -47,16 +47,15 @@ public class FreeCommentService {
     }
 
     public FreeCommentDTO createReply(int parentId, FreeCommentDTO reply) {
-        Optional<FreeCommentDTO> parentComment = commentDAO.findById(parentId);
         MemberDTO member = memberDAO.findByStudentId(reply.getStudentId());
-        if (parentComment.isPresent()) {
-            FreeCommentDTO parent = parentComment.get();
-            reply.setParent(parent);
-            reply.setNickname(member.getNickname());
-            return commentDAO.save(reply);
-        } else {
-            return null;
-        }
+        reply.setParentId(parentId);
+        reply.setNickname(member.getNickname());
+        commentDAO.save(reply);
+        return reply;
+    }
+
+    public List<FreeCommentDTO> getReply(int parentId) {
+        return commentDAO.findAllByParentId(parentId);
     }
 
     public boolean deleteReply(int commentId) {

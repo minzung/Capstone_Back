@@ -65,6 +65,16 @@ public class FreeCommentController {
     }
 
     /**
+     * 대댓글 조회
+     * @param parentId
+     * @return
+     */
+    @GetMapping("/{parentId}/replies")
+    public ResponseEntity<List<FreeCommentDTO>> getReply(@PathVariable int parentId) {
+        return new ResponseEntity<>(commentService.getReply(parentId), HttpStatus.CREATED);
+    }
+
+    /**
      * 대댓글 삭제
      * @param parentId
      * @return

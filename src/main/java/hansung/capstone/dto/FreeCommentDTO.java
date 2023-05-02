@@ -37,12 +37,8 @@ public class FreeCommentDTO {
     @Column(name = "updatedAt")
     private Timestamp updatedAt; // 수정일
 
-    @ManyToOne
-    @JoinColumn(name = "parentId")
-    private FreeCommentDTO parent;
-
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FreeCommentDTO> replies = new ArrayList<>();
+    @Column(name = "parentId")
+    private int parentId;
 
     @PrePersist
     public void onCreate() {
