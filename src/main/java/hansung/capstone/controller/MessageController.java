@@ -41,7 +41,7 @@ public class MessageController {
      * 쪽지방 나가기
      */
     @DeleteMapping("{studentId}")
-    public ResponseEntity<List<MessageDTO>> deleteMessage(@PathVariable("studentId") int studentId) {
+    public ResponseEntity<MessageDTO> deleteMessage(@PathVariable("studentId") int studentId) {
         return ResponseEntity.ok(messageService.deleteMessage(studentId));
     }
 

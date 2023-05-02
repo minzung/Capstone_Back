@@ -21,8 +21,8 @@ public class MessageService {
         return messageDAO.findByStudentId(studentId);
     }
 
-    public void deleteMessage(int studentId) {
-        messageDAO.deleteByStduentId(studentId);
+    public MessageDTO deleteMessage(int studentId) {
+        return messageDAO.deleteByStduentId(studentId);
     }
 
 }

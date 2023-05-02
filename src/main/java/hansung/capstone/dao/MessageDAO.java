@@ -15,6 +15,6 @@ public interface MessageDAO extends JpaRepository<MessageDTO, Integer> {
 
     @Modifying
     @Query("DELETE FROM message m WHERE m.sender = :studentId OR m.receiver = :studentId")
-    void deleteByStduentId(int studentId);
+    MessageDTO deleteByStduentId(int studentId);
 
 }
