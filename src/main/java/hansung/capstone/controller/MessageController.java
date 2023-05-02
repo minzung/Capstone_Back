@@ -3,10 +3,12 @@ package hansung.capstone.controller;
 import hansung.capstone.dto.MessageDTO;
 import hansung.capstone.service.MessageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +35,12 @@ public class MessageController {
      */
     @GetMapping("{studentId}")
     public ResponseEntity<List<MessageDTO>> getMessage(@PathVariable("studentId") int studentId) {
-        return ResponseEntity.ok(messageService.getMessage(studentId));
+        try {
+            List<MessageDTO> messages = messageService.getMessage(studentId);
+            return ResponseEntity.ok(messages);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
 

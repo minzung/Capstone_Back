@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +18,12 @@ public class MessageService {
         return messageDAO.save(messageDTO);
     }
 
-    public List<MessageDTO> getMessage(int studentId) {
-        return messageDAO.findByStudentId(studentId);
+    public List<MessageDTO> getMessage(int studentId) throws NoSuchElementException {
+        List<MessageDTO> messages = messageDAO.findByStudentId(studentId);
+        if (messages.isEmpty()) {
+            throw new NoSuchElementException("No messages found for studentId: " + studentId);
+        }
+        return messages;
     }
 
     public MessageDTO deleteMessage(int studentId) {
