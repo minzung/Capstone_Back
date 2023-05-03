@@ -149,6 +149,7 @@ public class MemberService {
 
         // 파일 정보를 MemberDTO 객체에 설정하고 저장합니다.
         member.setFiles(new Files(filename, fileOriName, filePath));
+        member.setFile(true);
         dao.save(member);
     }
 

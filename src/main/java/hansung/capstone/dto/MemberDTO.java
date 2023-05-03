@@ -35,6 +35,9 @@ public class MemberDTO {
     @Embedded
     private Files files; // 인증
 
+    @Column(name = "isFile")
+    private boolean isFile; // 재학생 인증 파일 제출 여부
+
     @Column(name = "isCertification")
     private boolean isCertification; // 재학생 인증
 
