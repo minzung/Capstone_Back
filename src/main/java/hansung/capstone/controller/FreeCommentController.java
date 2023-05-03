@@ -79,7 +79,7 @@ public class FreeCommentController {
      * @param replyId
      * @return
      */
-    @DeleteMapping("/replies/{replyId}")
+    @DeleteMapping("/{replyId}/replies")
     public ResponseEntity<?> deleteReply(@PathVariable int replyId) {
         commentService.deleteReply(replyId);
         return null;

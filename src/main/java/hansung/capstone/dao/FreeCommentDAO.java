@@ -17,8 +17,5 @@ public interface FreeCommentDAO extends JpaRepository<FreeCommentDTO, Integer> {
     @Query("SELECT c FROM freecomment c WHERE c.parentId = :parentId")
     List<FreeCommentDTO> findAllByParentId(int parentId);
 
-    @Query("DELETE FROM freecomment c WHERE c.id = :id OR c.parentId = :id")
-    void deleteAllCommentById(int id);
-
     void deleteByParentId(int id);
 }
