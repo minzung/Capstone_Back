@@ -79,14 +79,9 @@ public class FreeCommentController {
      * @param parentId
      * @return
      */
-    @DeleteMapping("/{parentId}/replies")
-    public ResponseEntity<Void> deleteReply(@PathVariable int parentId) {
-        boolean isDeleted = commentService.deleteReply(parentId);
-        if (isDeleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @DeleteMapping("/replies/{replyId}")
+    public ResponseEntity<?> deleteReply(@PathVariable int replyId) {
+        return new ResponseEntity<>(commentService.deleteReply(replyId), HttpStatus.OK);
     }
 
 }

@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,8 +47,12 @@ public class FreeCommentService {
 
     public FreeCommentDTO createReply(int parentId, FreeCommentDTO reply) {
         MemberDTO member = memberDAO.findByStudentId(reply.getStudentId());
+        FreeBoardDTO board = freeBoardDAO.findById(reply.getBoardId());
+
         reply.setParentId(parentId);
         reply.setNickname(member.getNickname());
+        board.setCountComment(board.getCountComment() + 1);
+
         commentDAO.save(reply);
         return reply;
     }
@@ -58,14 +61,12 @@ public class FreeCommentService {
         return commentDAO.findAllByParentId(parentId);
     }
 
-    public boolean deleteReply(int commentId) {
-        Optional<FreeCommentDTO> existingComment = commentDAO.findById(commentId);
-        if (existingComment.isPresent()) {
-            commentDAO.deleteById(commentId);
-            return true;
-        } else {
-            return false;
-        }
+    public void deleteReply(int replyId) {
+        FreeBoardDTO board = freeBoardDAO.findById(replyId);
+
+        board.setCountComment(board.getCountComment() - 1);
+
+        commentDAO.deleteById(replyId);
     }
 
 }
