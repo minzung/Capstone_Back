@@ -38,8 +38,7 @@ public class FreeCommentService {
         FreeBoardDTO board = freeBoardDAO.findById(boardId);
         board.setCountComment(board.getCountComment() - 1);
 
-        commentDAO.deleteById(id);
-        commentDAO.deleteByParentId(id);
+        commentDAO.deleteAllCommentById(id);
     }
 
     public List<FreeCommentDTO> getAllCommentsByBoardId(int boardId) {
