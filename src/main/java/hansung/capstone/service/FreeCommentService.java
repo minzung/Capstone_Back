@@ -8,6 +8,7 @@ import hansung.capstone.dto.FreeCommentDTO;
 import hansung.capstone.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,11 +35,13 @@ public class FreeCommentService {
         return commentDAO.save(comment);
     }
 
+    @Transactional
     public void deleteComment(int boardId, int id) {
         FreeBoardDTO board = freeBoardDAO.findById(boardId);
         board.setCountComment(board.getCountComment() - 1);
 
-        commentDAO.deleteAllCommentById(id);
+        commentDAO.deleteById(id);
+        commentDAO.deleteByParentId(id);
     }
 
     public List<FreeCommentDTO> getAllCommentsByBoardId(int boardId) {
