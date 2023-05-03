@@ -1,6 +1,7 @@
 package hansung.capstone.service;
 
 import hansung.capstone.dao.FreeBoardDAO;
+import hansung.capstone.dao.FreeCommentDAO;
 import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.FreeBoardDTO;
 import hansung.capstone.dto.MemberDTO;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -21,7 +23,9 @@ public class FreeBoardService {
 
     private final MemberDAO memberDAO;
 
-    private final FreeBoardDAO dao;
+    private final FreeBoardDAO boardDAO;
+
+    private final FreeCommentDAO commentDAO;
 
     // 게시글 등록
     public void createPost(FreeBoardDTO freeBoardDTO) {
@@ -63,7 +67,7 @@ public class FreeBoardService {
                 throw new RuntimeException("File upload failed.");
             }
         }
-        dao.save(freeBoardDTO);
+        boardDAO.save(freeBoardDTO);
     }
 
     /**
@@ -73,7 +77,7 @@ public class FreeBoardService {
      */
     public FreeBoardDTO updateFreeBoard(String studentId, UpdateFreeBoardRequest updateFreeBoardRequest) throws IllegalAccessException {
         // 업데이트할 게시글을 가져옵니다.
-        FreeBoardDTO freeBoard = dao.findById(updateFreeBoardRequest.getId());
+        FreeBoardDTO freeBoard = boardDAO.findById(updateFreeBoardRequest.getId());
 
         // studentId가 일치하는지 확인합니다.
         if (!freeBoard.getStudentId().equals(studentId)) {
@@ -86,7 +90,7 @@ public class FreeBoardService {
         freeBoard.setIsAnonymous(updateFreeBoardRequest.getIsAnonymous());
 
         // 수정된 게시글을 저장합니다.
-        return dao.save(freeBoard);
+        return boardDAO.save(freeBoard);
     }
 
     /**
@@ -95,7 +99,7 @@ public class FreeBoardService {
      * @return FreeBoardDTO
      */
     public FreeBoardDTO getPostById(int id) {
-        return dao.findById(id);
+        return boardDAO.findById(id);
     }
 
     /**
@@ -103,21 +107,22 @@ public class FreeBoardService {
      * @return List<FreeBoardDTO>
      */
     public List<FreeBoardDTO> getAllPosts() {
-        return dao.findAll();
+        return boardDAO.findAll();
     }
 
     /**
      * 게시글 삭제
      * @param studentId, id
      */
+    @Transactional
     public void deleteFreeBoard(String studentId, int id) {
-        FreeBoardDTO freeboard = dao.findById(id);
+        FreeBoardDTO freeboard = boardDAO.findById(id);
 
         if(!Objects.equals(freeboard.getStudentId(), studentId)) {
             throw new IllegalStateException("작성자만 게시글을 삭제할 수 있습니다.");
         }
-
-        dao.deleteById(id);
+        boardDAO.deleteById(id);
+        commentDAO.deleteByBoardId(id);
     }
 
 }
