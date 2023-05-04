@@ -50,6 +50,7 @@ public class FreeBoardService {
                 Files.write(path, decodedBytes);
                 // 파일 저장
                 freeBoardDTO.setFileDir(path.toString());
+                freeBoardDTO.setFileName(fileName);
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("File saving failed", e);

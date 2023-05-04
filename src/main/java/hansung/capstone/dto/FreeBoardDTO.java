@@ -48,6 +48,9 @@ public class FreeBoardDTO {
     @Column(name = "fileDir")
     private String fileDir;
 
+    @Column(name = "fileName")
+    private String fileName;
+
     @Transient
     private String imageFile;
 
