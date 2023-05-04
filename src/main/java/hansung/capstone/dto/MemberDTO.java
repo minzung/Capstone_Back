@@ -1,6 +1,6 @@
 package hansung.capstone.dto;
 
-import hansung.capstone.dto.item.Files;
+import hansung.capstone.dto.item.CustomFile;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +33,7 @@ public class MemberDTO {
     private String accessToken; // access 토큰
 
     @Embedded
-    private Files files; // 인증
+    private CustomFile files; // 인증
 
     @Column(name = "isFile")
     private boolean isFile; // 재학생 인증 파일 제출 여부

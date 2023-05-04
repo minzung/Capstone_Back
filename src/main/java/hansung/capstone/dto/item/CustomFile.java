@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class Files {
+public class CustomFile {
 
     private String filename;
 

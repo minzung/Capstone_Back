@@ -2,7 +2,7 @@ package hansung.capstone.service;
 
 import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.MemberDTO;
-import hansung.capstone.dto.item.Files;
+import hansung.capstone.dto.item.CustomFile;
 import hansung.capstone.dto.request.UpdateEmailRequest;
 import hansung.capstone.dto.request.UpdateNicknameRequest;
 import hansung.capstone.exception.NicknameExistsException;
@@ -148,7 +148,7 @@ public class MemberService {
         }
 
         // 파일 정보를 MemberDTO 객체에 설정하고 저장합니다.
-        member.setFiles(new Files(filename, fileOriName, filePath));
+        member.setFiles(new CustomFile(filename, fileOriName, filePath));
         member.setFile(true);
         dao.save(member);
     }
