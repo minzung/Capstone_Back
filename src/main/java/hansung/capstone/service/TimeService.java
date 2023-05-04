@@ -17,7 +17,7 @@ public class TimeService {
         return dao.save(timeDTO);
     }
 
-    public List<TimeDTO> getTime(int studentId) {
+    public List<TimeDTO> getTime(String studentId) {
         return dao.findAllByStudentId(studentId);
     }
 

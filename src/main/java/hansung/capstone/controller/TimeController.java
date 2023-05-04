@@ -26,12 +26,12 @@ public class TimeController {
         return ResponseEntity.ok(timeService.saveTime(timeDTO));
     }
 
-    @GetMapping("{studentId}")
-    public ResponseEntity<List<TimeDTO>> getTime(@PathVariable("studentId") int studentId) {
+    @GetMapping("/{studentId}")
+    public ResponseEntity<List<TimeDTO>> getTime(@PathVariable("studentId") String studentId) {
         return ResponseEntity.ok(timeService.getTime(studentId));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTime(@PathVariable("id") int id) {
         timeService.deleteTime(id);
         return ResponseEntity.ok("삭제 완료");
