@@ -5,17 +5,18 @@ import hansung.capstone.dao.FreeCommentDAO;
 import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.FreeBoardDTO;
 import hansung.capstone.dto.MemberDTO;
-import hansung.capstone.dto.item.Files;
 import hansung.capstone.dto.request.UpdateFreeBoardRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -33,43 +34,29 @@ public class FreeBoardService {
 
         freeBoardDTO.setNickname(member.getNickname());
 
-        MultipartFile imageFile = freeBoardDTO.getImageFile();
+        String base64Image = freeBoardDTO.getImageFile();
 
-        // 파일이 존재하고, 비어있지 않다면
-        if (imageFile != null && !imageFile.isEmpty()) {
+        if (base64Image != null && !base64Image.isEmpty()) {
             // 저장할 디렉토리 지정
-            String uploadDir = "C://Users/KMJ/Desktop/capstone/src/main/resources/static/freeboard";
-
+            String uploadDir = "C://Users/KMJ/Desktop/capstone/src/main/resources/static/freeboard/";
             // 고유한 파일 이름 생성
-            String originalFilename = imageFile.getOriginalFilename();
-            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String uniqueFilename = UUID.randomUUID().toString() + extension;
+            String fileName = "image_" + freeBoardDTO.getStudentId() + System.currentTimeMillis() + ".png";
+            Path path = Paths.get(uploadDir + fileName);
 
-            // 파일 저장
+            // Base64를 디코딩하여 이미지를 저장
+            byte[] decodedBytes = Base64.getDecoder().decode(base64Image.split(",")[1]);
+
             try {
-                File uploadPath = new File(uploadDir);
-                if (!uploadPath.exists()) {
-                    uploadPath.mkdirs();
-                }
-
-                String filePath = Paths.get(uploadDir, uniqueFilename).toString();
-                imageFile.transferTo(new File(filePath));
-
-                // 파일 정보를 DTO의 Files 객체에 저장
-                Files files = new Files();
-                files.setFilename(uniqueFilename);
-                files.setFileOriName(originalFilename);
-                files.setFileUrl(filePath);
-
-                freeBoardDTO.setFiles(files);
+                Files.write(path, decodedBytes);
+                // 파일 저장
+                freeBoardDTO.setFileDir(path.toString());
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new RuntimeException("File upload failed.");
+                throw new RuntimeException("File saving failed", e);
             }
         }
         boardDAO.save(freeBoardDTO);
     }
-
     /**
      * 게시글 수정
      * @param updateFreeBoardRequest

@@ -1,10 +1,8 @@
 package hansung.capstone.dto;
 
-import hansung.capstone.dto.item.Files;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -47,11 +45,11 @@ public class FreeBoardDTO {
     @Column(name = "countComment")
     private int countComment; // 댓글 수
 
-    @Embedded
-    private Files files; // 파일
+    @Column(name = "fileDir")
+    private String fileDir;
 
-    @Transient // 데이터베이스에 저장되지 않도록 설정
-    private MultipartFile imageFile;
+    @Transient
+    private String imageFile;
 
     @PrePersist
     public void onCreate() {
