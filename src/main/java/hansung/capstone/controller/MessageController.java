@@ -26,7 +26,6 @@ public class MessageController {
      */
     @PostMapping("")
     public ResponseEntity<MessageDTO> saveMessage(@RequestBody MessageDTO messageDTO) {
-        System.out.println("=========" + messageDTO.getReceiver());
         return ResponseEntity.ok(messageService.saveMessage(messageDTO));
     }
 

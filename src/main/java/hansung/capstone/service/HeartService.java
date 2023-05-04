@@ -37,8 +37,6 @@ public class HeartService {
         FreeBoardDTO board = freeBoardDAO.findById(id);
         HeartDTO heart = heartDAO.findByMemberAndBoard(studentId, id);
 
-        System.out.println("=====" + heart);
-
         LikeResponse response = new LikeResponse();
         response.setCountLike(board.getCountLike());
 
