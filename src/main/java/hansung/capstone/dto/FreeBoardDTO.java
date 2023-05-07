@@ -48,7 +48,7 @@ public class FreeBoardDTO {
     @Column(name = "fileDir")
     private String fileDir;
 
-    @Column(name = "base64Image")
+    @Transient
     private String base64Image;
 
     @Transient
