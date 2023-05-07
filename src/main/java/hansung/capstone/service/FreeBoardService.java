@@ -7,7 +7,10 @@ import hansung.capstone.dto.FreeBoardDTO;
 import hansung.capstone.dto.MemberDTO;
 import hansung.capstone.dto.request.UpdateFreeBoardRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -27,6 +30,8 @@ public class FreeBoardService {
     private final FreeBoardDAO boardDAO;
 
     private final FreeCommentDAO commentDAO;
+
+    private final ResourceLoader resourceLoader;
 
     // 게시글 등록
     public void createPost(FreeBoardDTO freeBoardDTO) {
@@ -50,7 +55,6 @@ public class FreeBoardService {
                 Files.write(path, decodedBytes);
                 // 파일 저장
                 freeBoardDTO.setFileDir(path.toString());
-                freeBoardDTO.setFileName(fileName);
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("File saving failed", e);
@@ -58,6 +62,7 @@ public class FreeBoardService {
         }
         boardDAO.save(freeBoardDTO);
     }
+
     /**
      * 게시글 수정
      * @param updateFreeBoardRequest
@@ -87,8 +92,41 @@ public class FreeBoardService {
      * @return FreeBoardDTO
      */
     public FreeBoardDTO getPostById(int id) {
-        return boardDAO.findById(id);
+        FreeBoardDTO freeBoardDTO = boardDAO.findById(id);
+
+        Resource imageResource = getImage(id);
+        if (imageResource.exists()) {
+            try {
+                byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                freeBoardDTO.setBase64Image(base64Image);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to read image data", e);
+            }
+        }
+
+        return freeBoardDTO;
     }
+    /**
+     * ID로 게시글 조회후 이미지 리턴
+     */
+    public Resource getImage(int id) {
+        FreeBoardDTO board = boardDAO.findById(id);
+        String fileDir = board.getFileDir();
+
+        if (fileDir == null || fileDir.isEmpty()) {
+            throw new RuntimeException("Image not found for the given ID: " + id);
+        }
+
+        Resource imageResource = resourceLoader.getResource("file:" + fileDir);
+
+        if (!imageResource.exists()) {
+            throw new RuntimeException("Image file not found at: " + fileDir);
+        }
+
+        return imageResource;
+    }
+
 
     /**
      * 모든 게시글 조회

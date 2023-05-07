@@ -48,8 +48,8 @@ public class FreeBoardDTO {
     @Column(name = "fileDir")
     private String fileDir;
 
-    @Column(name = "fileName")
-    private String fileName;
+    @Column(name = "base64Image")
+    private String base64Image;
 
     @Transient
     private String imageFile;
@@ -63,10 +63,6 @@ public class FreeBoardDTO {
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-    }
-
-    public boolean getIsAnonymous() {
-        return isAnonymous;
     }
 
     public void setIsAnonymous(boolean anonymous) {
