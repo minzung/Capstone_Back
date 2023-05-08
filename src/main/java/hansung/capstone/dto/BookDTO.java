@@ -14,6 +14,9 @@ public class BookDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id; // PK
 
+    @Column(name = "studentId")
+    private String studentId; // 판매자
+
     @Column(name = "lectureName")
     private String lectureName; // 강의명
 
