@@ -4,14 +4,14 @@ import hansung.capstone.dto.BookDTO;
 import hansung.capstone.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/book")
+@RestController
 @RequiredArgsConstructor
+@RequestMapping("/book")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BookController {
 
     private final BookService bookService;

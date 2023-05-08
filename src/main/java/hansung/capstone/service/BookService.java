@@ -48,7 +48,7 @@ public class BookService {
     }
 
     public void deleteBook(int id) {
-        bookDAO.delete(id);
+        bookDAO.deleteById(id);
     }
 
     public List<BookDTO> getAllBook() {
