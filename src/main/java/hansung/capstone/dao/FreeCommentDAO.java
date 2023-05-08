@@ -20,4 +20,7 @@ public interface FreeCommentDAO extends JpaRepository<FreeCommentDTO, Integer> {
     void deleteByParentId(int id);
 
     void deleteByBoardId(int id);
+
+    int countByParentId(int id);
+
 }

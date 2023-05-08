@@ -76,12 +76,12 @@ public class FreeCommentController {
 
     /**
      * 대댓글 삭제
-     * @param replyId
+     * @param boardId, replyId
      * @return
      */
-    @DeleteMapping("/{replyId}/replies")
-    public ResponseEntity<?> deleteReply(@PathVariable int replyId) {
-        commentService.deleteReply(replyId);
+    @DeleteMapping("/{boardId}/{replyId}/replies")
+    public ResponseEntity<?> deleteReply(@PathVariable int boardId, @PathVariable int replyId) {
+        commentService.deleteReply(boardId, replyId);
         return null;
     }
 

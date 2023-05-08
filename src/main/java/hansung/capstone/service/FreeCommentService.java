@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,9 @@ public class FreeCommentService {
     @Transactional
     public void deleteComment(int boardId, int id) {
         FreeBoardDTO board = freeBoardDAO.findById(boardId);
-        board.setCountComment(board.getCountComment() - 1);
+        int reply = commentDAO.countByParentId(id);
+
+        board.setCountComment(board.getCountComment() - reply - 1);
 
         commentDAO.deleteById(id);
         commentDAO.deleteByParentId(id);
@@ -64,8 +67,8 @@ public class FreeCommentService {
         return commentDAO.findAllByParentId(parentId);
     }
 
-    public void deleteReply(int replyId) {
-        FreeBoardDTO board = freeBoardDAO.findById(replyId);
+    public void deleteReply(int boardId, int replyId) {
+        FreeBoardDTO board = freeBoardDAO.findById(boardId);
 
         board.setCountComment(board.getCountComment() - 1);
 
