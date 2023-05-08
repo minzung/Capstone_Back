@@ -125,7 +125,7 @@ public class MemberService {
             throw new StudentIdNotFoundException("존재하지 않는 학번입니다.");
 
         // 파일 저장 경로를 지정합니다.
-        String uploadDirectory = "C:/Users/KMJ/Desktop/capstone/src/main/resources/static/certification/";
+        String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/certification/";
         String filename = studentId + ".png";
         String fileOriName = file.getOriginalFilename();
         String filePath = uploadDirectory + filename;

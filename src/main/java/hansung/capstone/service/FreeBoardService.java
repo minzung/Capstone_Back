@@ -43,7 +43,7 @@ public class FreeBoardService {
 
         if (base64Image != null && !base64Image.isEmpty()) {
             // 저장할 디렉토리 지정
-            String uploadDir = "C://Users/KMJ/Desktop/capstone/src/main/resources/static/freeboard/";
+            String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/freeboard/";
             // 고유한 파일 이름 생성
             String fileName = "image_" + freeBoardDTO.getStudentId() + System.currentTimeMillis() + ".png";
             Path path = Paths.get(uploadDir + fileName);
