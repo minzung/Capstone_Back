@@ -95,7 +95,7 @@ public class FreeBoardService {
         FreeBoardDTO freeBoardDTO = boardDAO.findById(id);
 
         Resource imageResource = getImage(id);
-        if (imageResource != null && imageResource.exists()) {
+        if (imageResource.exists()) {
             try {
                 byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
@@ -106,6 +106,7 @@ public class FreeBoardService {
         }
         return freeBoardDTO;
     }
+
 
     /**
      * ID로 게시글 조회후 이미지 리턴
