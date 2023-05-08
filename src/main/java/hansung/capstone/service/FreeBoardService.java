@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -81,6 +82,35 @@ public class FreeBoardService {
         freeBoard.setTitle(updateFreeBoardRequest.getTitle());
         freeBoard.setContent(updateFreeBoardRequest.getContent());
         freeBoard.setAnonymous(updateFreeBoardRequest.getIsAnonymous());
+
+        // 이미지 파일 처리
+        String base64Image = updateFreeBoardRequest.getImageFile();
+        if (base64Image != null && !base64Image.isEmpty()) {
+            // 저장할 디렉토리 지정
+            String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/freeboard/";
+
+            // 디렉토리 생성
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // 고유한 파일 이름 생성
+            String fileName = "image_" + freeBoard.getStudentId() + System.currentTimeMillis() + ".png";
+            Path path = Paths.get(uploadDir + fileName);
+
+            // Base64를 디코딩하여 이미지를 저장
+            byte[] decodedBytes = Base64.getDecoder().decode(base64Image.split(",")[1]);
+
+            try {
+                Files.write(path, decodedBytes);
+                // 파일 저장
+                freeBoard.setFileDir(path.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("File saving failed", e);
+            }
+        }
 
         // 수정된 게시글을 저장합니다.
         return boardDAO.save(freeBoard);

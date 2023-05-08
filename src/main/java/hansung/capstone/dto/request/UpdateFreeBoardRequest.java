@@ -13,14 +13,12 @@ public class UpdateFreeBoardRequest {
 
     private String content;
 
-    private boolean isAnonymous;
+    private boolean anonymous;
+
+    private String imageFile;
 
     public boolean getIsAnonymous() {
-        return isAnonymous;
-    }
-
-    public void setIsAnonymous(boolean anonymous) {
-        isAnonymous = anonymous;
+        return anonymous;
     }
 
 }
