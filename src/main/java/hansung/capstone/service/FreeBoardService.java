@@ -80,7 +80,7 @@ public class FreeBoardService {
         // 게시글을 수정합니다.
         freeBoard.setTitle(updateFreeBoardRequest.getTitle());
         freeBoard.setContent(updateFreeBoardRequest.getContent());
-        freeBoard.setIsAnonymous(updateFreeBoardRequest.getIsAnonymous());
+        freeBoard.setAnonymous(updateFreeBoardRequest.getIsAnonymous());
 
         // 수정된 게시글을 저장합니다.
         return boardDAO.save(freeBoard);
@@ -95,7 +95,7 @@ public class FreeBoardService {
         FreeBoardDTO freeBoardDTO = boardDAO.findById(id);
 
         Resource imageResource = getImage(id);
-        if (imageResource.exists()) {
+        if (imageResource != null && imageResource.exists()) {
             try {
                 byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
@@ -104,9 +104,9 @@ public class FreeBoardService {
                 throw new RuntimeException("Failed to read image data", e);
             }
         }
-
         return freeBoardDTO;
     }
+
     /**
      * ID로 게시글 조회후 이미지 리턴
      */

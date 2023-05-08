@@ -28,7 +28,7 @@ public class FreeCommentService {
 
         comment.setBoardId(boardId);
         comment.setNickname(student.getNickname());
-        comment.setIsAnonymous(comment.getIsAnonymous());
+        comment.setAnonymous(comment.getAnonymous());
 
         board.setCountComment(board.getCountComment() + 1);
 

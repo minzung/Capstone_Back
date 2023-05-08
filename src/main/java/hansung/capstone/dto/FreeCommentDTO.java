@@ -28,8 +28,7 @@ public class FreeCommentDTO {
 
     private String content; // 댓글 내용
 
-    @Column(name = "isAnonymous")
-    private boolean isAnonymous; // 익명여부
+    private boolean anonymous; // 익명여부
 
     @Column(name = "createdAt")
     private Timestamp createdAt; // 동록일
@@ -51,12 +50,8 @@ public class FreeCommentDTO {
         this.updatedAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
     }
 
-    public boolean getIsAnonymous() {
-        return isAnonymous;
-    }
-
-    public void setIsAnonymous(boolean anonymous) {
-        isAnonymous = anonymous;
+    public boolean getAnonymous() {
+        return anonymous;
     }
 
 }

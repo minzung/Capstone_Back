@@ -28,8 +28,7 @@ public class FreeBoardDTO {
 
     private String content; // 내용
 
-    @Column(name = "isAnonymous")
-    private boolean isAnonymous; // 익명여부
+    private boolean anonymous; // 익명여부
 
     @Column(name = "createdAt")
     private Timestamp createdAt; // 동록일
@@ -60,10 +59,6 @@ public class FreeBoardDTO {
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-    }
-
-    public void setIsAnonymous(boolean anonymous) {
-        isAnonymous = anonymous;
     }
 
 }
