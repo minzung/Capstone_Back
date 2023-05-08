@@ -49,9 +49,6 @@ public class FreeBoardDTO {
     private String fileDir;
 
     @Transient
-    private String base64Image;
-
-    @Transient
     private String imageFile;
 
     @PrePersist

@@ -99,7 +99,7 @@ public class FreeBoardService {
             try {
                 byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
-                freeBoardDTO.setBase64Image(base64Image);
+                freeBoardDTO.setImageFile(base64Image);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to read image data", e);
             }
