@@ -95,7 +95,7 @@ public class FreeBoardService {
         FreeBoardDTO freeBoardDTO = boardDAO.findById(id);
 
         Resource imageResource = getImage(id);
-        if (imageResource.exists()) {
+        if (imageResource != null && imageResource.exists()) {
             try {
                 byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
                 String base64Image = Base64.getEncoder().encodeToString(imageData);
@@ -116,13 +116,13 @@ public class FreeBoardService {
         String fileDir = board.getFileDir();
 
         if (fileDir == null || fileDir.isEmpty()) {
-            throw new RuntimeException("Image not found for the given ID: " + id);
+            return null;
         }
 
         Resource imageResource = resourceLoader.getResource("file:" + fileDir);
 
         if (!imageResource.exists()) {
-            throw new RuntimeException("Image file not found at: " + fileDir);
+            return null;
         }
 
         return imageResource;
