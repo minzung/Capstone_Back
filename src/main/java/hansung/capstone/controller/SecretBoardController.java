@@ -38,7 +38,6 @@ public class SecretBoardController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<SecretBoardDTO> getPostById(@PathVariable int id) {
-
         return ResponseEntity.ok(secretBoardService.getPostById(id));
     }
 

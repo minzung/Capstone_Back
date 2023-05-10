@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/secret/comment")
+@RequestMapping("/secretboard/comment")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SecretCommentController {
 

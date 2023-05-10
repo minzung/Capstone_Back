@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface SecretCommentDAO extends JpaRepository<SecretCommentDTO, Integer> {
 
-    @Query("SELECT c FROM freecomment c WHERE c.boardId = :boardId")
+    @Query("SELECT c FROM secretcomment c WHERE c.boardId = :boardId")
     List<SecretCommentDTO> findAllByBoardId(@Param("boardId") int boardId);
 
-    @Query("SELECT c FROM freecomment c WHERE c.parentId = :parentId")
+    @Query("SELECT c FROM secretcomment c WHERE c.parentId = :parentId")
     List<SecretCommentDTO> findAllByParentId(int parentId);
 
     void deleteByParentId(int id);
