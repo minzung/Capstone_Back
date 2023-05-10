@@ -9,6 +9,6 @@ public interface BookDAO extends JpaRepository<BookDTO, Integer> {
 
     void deleteById(int id);
 
-    BookDTO getBookById(int id);
+    BookDTO findById(int id);
 
 }

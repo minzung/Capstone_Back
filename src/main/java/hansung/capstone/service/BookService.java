@@ -3,7 +3,10 @@ package hansung.capstone.service;
 import hansung.capstone.dao.BookDAO;
 import hansung.capstone.dto.BookDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,6 +20,8 @@ import java.util.List;
 public class BookService {
 
     private final BookDAO bookDAO;
+
+    private final ResourceLoader resourceLoader;
 
     public void saveBook(BookDTO bookDTO) {
         String base64Image = bookDTO.getImageFile();
@@ -43,16 +48,54 @@ public class BookService {
         bookDAO.save(bookDTO);
     }
 
+    /**
+     * ID로 게시글 조회
+     * @param id
+     * @return FreeBoardDTO
+     */
     public BookDTO getBookById(int id) {
-        return bookDAO.getBookById(id);
+        BookDTO book = bookDAO.findById(id);
+
+        Resource imageResource = getImage(id);
+
+        if (imageResource != null && imageResource.exists()) {
+            try {
+                byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                book.setImageFile(base64Image);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to read image data", e);
+            }
+        }
+        return book;
+    }
+
+    /**
+     * ID로 게시글 조회후 이미지 리턴
+     */
+    public Resource getImage(int id) {
+        BookDTO book = bookDAO.findById(id);
+        String fileDir = book.getFileDir();
+
+        if (fileDir == null || fileDir.isEmpty()) {
+            return null;
+        }
+
+        Resource imageResource = resourceLoader.getResource("file:" + fileDir);
+
+        if (!imageResource.exists()) {
+            return null;
+        }
+
+        return imageResource;
     }
 
     public void deleteBook(int id) {
         bookDAO.deleteById(id);
     }
 
-    public List<BookDTO> getAllBook() {
-        return getAllBook();
+    public List<BookDTO> getAllBooks() {
+        return bookDAO.findAll();
     }
 
 }

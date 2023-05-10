@@ -1,8 +1,10 @@
 package hansung.capstone.controller;
 
 import hansung.capstone.dto.BookDTO;
+import hansung.capstone.dto.LectureDTO;
 import hansung.capstone.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +24,9 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<BookDTO> getBookById(@PathVariable("id") int id) {
-        return ResponseEntity.ok(bookService.getBookById(id));
+    @GetMapping("/{id}")
+    public ResponseEntity<BookDTO> getBookById(@PathVariable int id) {
+        return new ResponseEntity<>(bookService.getBookById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
@@ -34,8 +36,8 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BookDTO>> getAllBook() {
-        return ResponseEntity.ok(bookService.getAllBook());
+    public ResponseEntity<List<BookDTO>> getAllBooks() {
+        return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
     }
 
 }
