@@ -7,8 +7,8 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity(name = "heart")
-public class HeartDTO {
+@Entity(name = "freeheart")
+public class FreeHeartDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
