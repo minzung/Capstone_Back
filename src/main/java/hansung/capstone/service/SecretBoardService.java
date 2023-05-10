@@ -86,7 +86,7 @@ public class SecretBoardService {
         String base64Image = updateFreeBoardRequest.getImageFile();
         if (base64Image != null && !base64Image.isEmpty()) {
             // 저장할 디렉토리 지정
-            String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/freeboard/";
+            String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/secret/";
 
             // 디렉토리 생성
             File directory = new File(uploadDir);
