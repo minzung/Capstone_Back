@@ -19,10 +19,10 @@ public class MessageService {
         return messageDAO.save(messageDTO);
     }
 
-    public List<MessageDTO> getAllMessage(String studentId) throws NoSuchElementException {
+    public List<MessageDTO> getAllMessage(String studentId){
         List<MessageDTO> messages = messageDAO.findByStudentId(studentId);
         if (messages.isEmpty()) {
-            throw new NoSuchElementException("No messages found for studentId: " + studentId);
+            return null;
         }
         return messages;
     }

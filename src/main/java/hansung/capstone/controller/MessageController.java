@@ -36,12 +36,7 @@ public class MessageController {
      */
     @GetMapping("{studentId}/all")
     public ResponseEntity<List<MessageDTO>> getAllMessage(@PathVariable("studentId") String studentId) {
-        try {
-            List<MessageDTO> messages = messageService.getAllMessage(studentId);
-            return ResponseEntity.ok(messages);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        return ResponseEntity.ok(messageService.getAllMessage(studentId));
     }
 
     /**
