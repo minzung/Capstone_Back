@@ -2,6 +2,7 @@ package hansung.capstone.service;
 
 import hansung.capstone.dao.BookDAO;
 import hansung.capstone.dto.BookDTO;
+import hansung.capstone.dto.FreeBoardDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -74,8 +75,8 @@ public class BookService {
      * ID로 게시글 조회후 이미지 리턴
      */
     public Resource getImage(int id) {
-        BookDTO book = bookDAO.findById(id);
-        String fileDir = book.getFileDir();
+        BookDTO board = bookDAO.findById(id);
+        String fileDir = board.getFileDir();
 
         if (fileDir == null || fileDir.isEmpty()) {
             return null;
