@@ -24,11 +24,11 @@ public class MessageDTO {
     private String content; // 내용
 
     @Column(name = "createdAt")
-    private Timestamp createdAt; // 동록일
+    private Timestamp timestamp; // 보낸 시간
 
     @PrePersist
     public void onCreate() {
-        this.createdAt = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        this.timestamp = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
     }
 
 }

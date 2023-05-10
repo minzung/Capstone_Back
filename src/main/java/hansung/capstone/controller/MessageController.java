@@ -45,19 +45,14 @@ public class MessageController {
     }
 
     /**
-     * id로 쪽지 내용 조회
-     * @param id
-     * @return List<MessageDTO>
+     * 대화 내용 조회
+     * @param sender, receiver
+     * @return MessageDTO
      */
-    @GetMapping("{studentId}")
-    public ResponseEntity<Optional<MessageDTO>> getMessageById(@PathVariable("id") int id) {
-        try {
-            return ResponseEntity.ok(messageService.getMessageById(id));
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    @GetMapping("")
+    public ResponseEntity<List<MessageDTO>> getConversation(@RequestParam String sender, @RequestParam String receiver) {
+        return ResponseEntity.ok(messageService.getConversation(sender, receiver));
     }
-
 
     /**
      * 쪽지방 나가기

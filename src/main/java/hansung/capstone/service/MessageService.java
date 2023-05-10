@@ -27,8 +27,8 @@ public class MessageService {
         return messages;
     }
 
-    public Optional<MessageDTO> getMessageById(int id) {
-        return messageDAO.findById(id);
+    public List<MessageDTO> getConversation(String sender, String receiver) {
+        return messageDAO.findBySenderAndReceiverOrderByTimestampAsc(sender, receiver);
     }
 
     public MessageDTO deleteMessage(int studentId) {
