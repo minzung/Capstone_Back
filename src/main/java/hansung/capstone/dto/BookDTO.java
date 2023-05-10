@@ -42,4 +42,8 @@ public class BookDTO {
 
     private String content; // 책정보
 
+    private boolean reservation; // 예약
+
+    private boolean complete; // 거래 완료
+
 }
