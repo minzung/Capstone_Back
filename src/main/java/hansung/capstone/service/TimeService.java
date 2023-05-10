@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +23,11 @@ public class TimeService {
         return dao.findAllByStudentId(studentId);
     }
 
-    public void deleteTime(int id) {
-        dao.deleteById(id);
+    public void deleteTime(String studentId, int id) {
+        TimeDTO time = dao.findById(id);
+        if (Objects.equals(time.getStudentId(), studentId)) {
+            dao.deleteById(id);
+        }
     }
 
 }

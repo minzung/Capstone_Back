@@ -41,9 +41,9 @@ public class TimeController {
      * @param id
      * @return
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTime(@PathVariable("id") int id) {
-        timeService.deleteTime(id);
+    @DeleteMapping("/{studentId}/{id}")
+    public ResponseEntity<?> deleteTime(@PathVariable("studentId") String studentId, @PathVariable("id") int id) {
+        timeService.deleteTime(studentId, id);
         return ResponseEntity.ok("삭제 완료");
     }
 

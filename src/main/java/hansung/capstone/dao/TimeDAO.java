@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface TimeDAO extends JpaRepository<TimeDTO, Integer> {
 
+    TimeDTO findById(int id);
+
     @Query("SELECT t FROM time t WHERE t.studentId = :studentId")
     List<TimeDTO> findAllByStudentId(String studentId);
 
