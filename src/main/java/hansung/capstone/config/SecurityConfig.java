@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**", "/lecture/**", "/freeboard/{id}", "/freeboard/all", "/book/all").permitAll() // 검증 필요없음
+                .antMatchers("/auth/**", "/lecture/**", "/freeboard/{id}", "/freeboard/all", "/book/all", "/secretboard/all").permitAll() // 검증 필요없음
                 .anyRequest().authenticated() // 나머지는 검증 필요
 
                 .and()
