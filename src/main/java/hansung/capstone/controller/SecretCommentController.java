@@ -57,7 +57,7 @@ public class SecretCommentController {
      * @return
      */
     @PostMapping("/{parentId}/replies")
-    public ResponseEntity<FreeCommentDTO> createReply(@PathVariable int parentId, @RequestBody SecretCommentDTO reply) {
+    public ResponseEntity<SecretCommentDTO> createReply(@PathVariable int parentId, @RequestBody SecretCommentDTO reply) {
         SecretCommentDTO createdReply = commentService.createReply(parentId, reply);
         if (createdReply != null) {
             return new ResponseEntity<>(createdReply, HttpStatus.CREATED);
