@@ -1,11 +1,7 @@
 package hansung.capstone.service;
 
-import hansung.capstone.dao.FreeBoardDAO;
-import hansung.capstone.dao.FreeHeartDAO;
 import hansung.capstone.dao.SecretBoardDAO;
 import hansung.capstone.dao.SecretHeartDAO;
-import hansung.capstone.dto.FreeBoardDTO;
-import hansung.capstone.dto.FreeHeartDTO;
 import hansung.capstone.dto.SecretBoardDTO;
 import hansung.capstone.dto.SecretHeartDTO;
 import hansung.capstone.dto.response.LikeResponse;
@@ -23,7 +19,7 @@ public class SecretHeartService {
     public void addLike(String studentId, int id) {
         SecretBoardDTO board = secretBoardDAO.findById(id);
 
-        FreeHeartDTO heart = new FreeHeartDTO();
+        SecretHeartDTO heart = new SecretHeartDTO();
         heart.setStudentId(studentId);
         heart.setBoardId(id);
         heart.setIsFilled(true);
@@ -35,7 +31,7 @@ public class SecretHeartService {
 
     public LikeResponse getLike(String studentId, int id) {
         SecretBoardDTO board = secretBoardDAO.findById(id);
-        FreeHeartDTO heart = heartDAO.findByMemberAndBoard(studentId, id);
+        SecretHeartDTO heart = heartDAO.findByMemberAndBoard(studentId, id);
 
         LikeResponse response = new LikeResponse();
         response.setCountLike(board.getCountLike());
