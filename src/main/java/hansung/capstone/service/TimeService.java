@@ -23,11 +23,8 @@ public class TimeService {
         return dao.findAllByStudentId(studentId);
     }
 
-    public void deleteTime(String studentId, int id) {
-        TimeDTO time = dao.findById(id);
-        if (Objects.equals(time.getStudentId(), studentId)) {
-            dao.deleteById(id);
-        }
+    public void deleteTime(int id) {
+        dao.deleteById(id);
     }
 
 }
