@@ -3,13 +3,10 @@ package hansung.capstone.controller;
 import hansung.capstone.dto.MessageDTO;
 import hansung.capstone.service.MessageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,36 +22,29 @@ public class MessageController {
      * @return MessageDTO
      */
     @PostMapping("")
-    public ResponseEntity<MessageDTO> saveMessage(@RequestBody MessageDTO messageDTO) {
-        return ResponseEntity.ok(messageService.saveMessage(messageDTO));
+    public ResponseEntity<MessageDTO> sendMessage(@RequestBody MessageDTO messageDTO) {
+        return ResponseEntity.ok(messageService.sendMessage(messageDTO));
     }
 
     /**
-     * studnetId로 모든 쪽지 조회
-     * @param studentId
+     * 채팅방 입장시 대화내용 조회
+     * @param roomId
      * @return List<MessageDTO>
      */
-    @GetMapping("{studentId}/all")
-    public ResponseEntity<List<MessageDTO>> getAllMessage(@PathVariable("studentId") String studentId) {
-        return ResponseEntity.ok(messageService.getAllMessage(studentId));
+    @GetMapping("/room/{roomId}")
+    public ResponseEntity<List<MessageDTO>> getRoomMessages(@PathVariable int roomId) {
+        List<MessageDTO> messages = messageService.getRoomMessages(roomId);
+        return ResponseEntity.ok(messages);
     }
 
     /**
-     * 대화 내용 조회
-     * @param sender, receiver
-     * @return MessageDTO
+     * 채팅방 나갈시 대화내용 삭제
+     * @param roomId
+     * @return Boolean
      */
-    @GetMapping("")
-    public ResponseEntity<List<MessageDTO>> getConversation(@RequestParam String sender, @RequestParam String receiver) {
-        return ResponseEntity.ok(messageService.getConversation(sender, receiver));
-    }
-
-    /**
-     * 쪽지방 나가기
-     */
-    @DeleteMapping("{studentId}")
-    public ResponseEntity<MessageDTO> deleteMessage(@PathVariable("studentId") int studentId) {
-        return ResponseEntity.ok(messageService.deleteMessage(studentId));
+    @DeleteMapping("/room/{roomId}")
+    public ResponseEntity<Boolean> deleteRoom(@PathVariable int roomId) {
+        return ResponseEntity.ok(messageService.deleteRoom(roomId));
     }
 
 }
