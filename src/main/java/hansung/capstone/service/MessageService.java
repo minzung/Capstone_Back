@@ -7,8 +7,10 @@ import hansung.capstone.dto.MessageRoomDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +46,18 @@ public class MessageService {
     }
 
     public List<MessageDTO> getRoomList(String studentId) {
-        return messageDAO.findBySenderOrReceiver(studentId);
+        List<MessageRoomDTO> rooms = roomDAO.findBySenderOrReceiver(studentId);
+
+        return rooms.stream()
+                .map(room -> getLastMessage(room))
+                .collect(Collectors.toList());
+    }
+
+    private MessageDTO getLastMessage(MessageRoomDTO room) {
+        List<MessageDTO> messages = messageDAO.findByRoom(room);
+        return messages.stream()
+                .max(Comparator.comparing(MessageDTO::getId))
+                .orElse(null);
     }
 
     public List<MessageDTO> getRoomMessages(int roomId) {
