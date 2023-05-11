@@ -1,6 +1,7 @@
 package hansung.capstone.controller;
 
 import hansung.capstone.dto.MessageDTO;
+import hansung.capstone.dto.MessageRoomDTO;
 import hansung.capstone.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,17 @@ public class MessageController {
     }
 
     /**
-     * 채팅방 입장시 대화내용 조회
+     * 쪽지방 List 구현
+     * @param studentId
+     * @return List<MessageDTO>
+     */
+    @GetMapping("{studentId}/all")
+    public ResponseEntity<List<MessageDTO>> getRoomList(@PathVariable("studentId") String studentId) {
+        return ResponseEntity.ok(messageService.getRoomList(studentId));
+    }
+
+    /**
+     * 쪽지방 입장시 대화내용 조회
      * @param roomId
      * @return List<MessageDTO>
      */
@@ -38,7 +49,7 @@ public class MessageController {
     }
 
     /**
-     * 채팅방 나갈시 대화내용 삭제
+     * 쪽지방 나갈 시 대화내용 삭제
      * @param roomId
      * @return Boolean
      */

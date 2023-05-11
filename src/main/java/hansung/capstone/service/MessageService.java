@@ -43,6 +43,10 @@ public class MessageService {
         return roomDAO.save(room);
     }
 
+    public List<MessageDTO> getRoomList(String studentId) {
+        return messageDAO.findBySenderOrReceiver(studentId);
+    }
+
     public List<MessageDTO> getRoomMessages(int roomId) {
         return messageDAO.findByRoomIdOrderBySendTime(roomId);
     }
