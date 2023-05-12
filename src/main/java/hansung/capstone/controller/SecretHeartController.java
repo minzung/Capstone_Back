@@ -1,7 +1,6 @@
 package hansung.capstone.controller;
 
 import hansung.capstone.dto.response.LikeResponse;
-import hansung.capstone.service.FreeHeartService;
 import hansung.capstone.service.SecretHeartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,6 @@
 package hansung.capstone.controller;
 
 import hansung.capstone.dto.BookDTO;
-import hansung.capstone.dto.LectureDTO;
 import hansung.capstone.dto.item.State;
 import hansung.capstone.service.BookService;
 import lombok.RequiredArgsConstructor;

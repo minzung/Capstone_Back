@@ -1,8 +1,6 @@
 package hansung.capstone.controller;
 
-import hansung.capstone.dto.FreeCommentDTO;
 import hansung.capstone.dto.SecretCommentDTO;
-import hansung.capstone.service.FreeCommentService;
 import hansung.capstone.service.SecretCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
