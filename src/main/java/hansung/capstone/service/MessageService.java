@@ -7,6 +7,7 @@ import hansung.capstone.dto.MessageRoomDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +65,7 @@ public class MessageService {
         return messageDAO.findByRoomIdOrderBySendTime(roomId);
     }
 
+    @Transactional
     public boolean deleteRoom(int roomId) {
         Optional<MessageRoomDTO> optionalRoom = roomDAO.findById(roomId);
         if (optionalRoom.isPresent()) {
