@@ -1,5 +1,6 @@
 package hansung.capstone.dto;
 
+import hansung.capstone.dto.item.State;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,8 +43,8 @@ public class BookDTO {
 
     private String content; // 책정보
 
-    private boolean reservation; // 예약
-
-    private boolean complete; // 거래 완료
+    @Enumerated(EnumType.STRING)
+    @Column(name = "saleState")
+    private State saleState = State.판매중; // 거래 상태
 
 }

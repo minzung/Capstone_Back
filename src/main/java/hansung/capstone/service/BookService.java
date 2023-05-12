@@ -3,6 +3,7 @@ package hansung.capstone.service;
 import hansung.capstone.dao.BookDAO;
 import hansung.capstone.dto.BookDTO;
 import hansung.capstone.dto.FreeBoardDTO;
+import hansung.capstone.dto.item.State;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -15,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -89,6 +91,13 @@ public class BookService {
         }
 
         return imageResource;
+    }
+
+    public BookDTO setSaleState(int id, State saleState) {
+        BookDTO board = bookDAO.findById(id);
+        board.setSaleState(saleState);
+        bookDAO.save(board);
+        return board;
     }
 
     public void deleteBook(int id) {

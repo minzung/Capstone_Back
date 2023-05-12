@@ -2,6 +2,7 @@ package hansung.capstone.controller;
 
 import hansung.capstone.dto.BookDTO;
 import hansung.capstone.dto.LectureDTO;
+import hansung.capstone.dto.item.State;
 import hansung.capstone.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,12 @@ public class BookController {
     public ResponseEntity<BookDTO> getBookById(@PathVariable int id) {
         return new ResponseEntity<>(bookService.getBookById(id), HttpStatus.OK);
     }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<BookDTO> setSaleState(@PathVariable int id, @RequestParam("saleState") String saleState) {
+        return new ResponseEntity<>(bookService.setSaleState(id, State.valueOf(saleState)), HttpStatus.OK);
+    }
+
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable("id") int id) {
