@@ -1,7 +1,6 @@
 package hansung.capstone.controller;
 
 import hansung.capstone.dto.MessageDTO;
-import hansung.capstone.dto.MessageRoomDTO;
 import hansung.capstone.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
