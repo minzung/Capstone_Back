@@ -43,6 +43,12 @@ public class BookDTO {
 
     private String content; // 책정보
 
+    @Column(name = "originalPrice")
+    private String originalPrice; // 원래 가격
+
+    @Column(name = "sellPrice")
+    private String sellPrice; // 팔 가격
+
     @Enumerated(EnumType.STRING)
     @Column(name = "saleState")
     private State saleState = State.판매중; // 거래 상태
