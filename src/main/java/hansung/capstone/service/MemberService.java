@@ -77,6 +77,13 @@ public class MemberService {
         dao.save(member);
     }
 
+    public void updateCertification(String studentId) {
+        MemberDTO member = dao.findByStudentId(studentId);
+
+        member.setCertification(true);
+        dao.save(member);
+    }
+
     /**
      * 이메일 변경
      * @param studentId, updateEmailRequest
@@ -158,4 +165,5 @@ public class MemberService {
     public List<MemberDTO> getMemberAll() {
         return dao.findAll();
     }
+
 }

@@ -91,6 +91,21 @@ public class AuthController {
     }
 
     /**
+     * 비밀번호 변경
+     * @param studentId, newPassword
+     * @return ?
+     */
+    @PatchMapping("/{studentId}/certification")
+    public ResponseEntity<?> updateCertification(@PathVariable("studentId") String studentId) {
+        try {
+            memberService.updateCertification(studentId);
+            return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
+        } catch (StudentIdNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    /**
      * studentId로 정보 얻기
      * @param studentId
      * @return MemberDTO
