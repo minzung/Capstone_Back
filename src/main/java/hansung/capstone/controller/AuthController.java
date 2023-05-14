@@ -111,10 +111,10 @@ public class AuthController {
      * @return ?
      */
     @PatchMapping("/{studentId}/certification/fail")
-    public ResponseEntity<?> updateCertification(@PathVariable("studentId") String studentId) {
+    public ResponseEntity<?> updateFailCertification(@PathVariable("studentId") String studentId) {
         try {
             memberService.updateFailCertification(studentId);
-            return ResponseEntity.ok(memberService.updateFailCertification(studentId));
+            return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
         } catch (StudentIdNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
