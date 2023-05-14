@@ -2,6 +2,7 @@ package hansung.capstone.service;
 
 import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.MemberDTO;
+import hansung.capstone.dto.item.ImageData;
 import hansung.capstone.dto.request.UpdateEmailRequest;
 import hansung.capstone.dto.request.UpdateNicknameRequest;
 import hansung.capstone.exception.NicknameExistsException;
@@ -127,10 +128,10 @@ public class MemberService {
      * @return void
      */
     @Transactional
-    public void uploadStudentCard(String studentId) {
+    public void uploadStudentCard(String studentId, ImageData imageData) {
         MemberDTO member = dao.findByStudentId(studentId);
 
-        String base64Image = member.getImageFile();
+        String base64Image = imageData.getImageFile();
 
         if (base64Image != null && !base64Image.isEmpty()) {
             // 저장할 디렉토리 지정

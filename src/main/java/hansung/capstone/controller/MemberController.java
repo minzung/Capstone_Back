@@ -1,6 +1,7 @@
 package hansung.capstone.controller;
 
 import hansung.capstone.dto.MemberDTO;
+import hansung.capstone.dto.item.ImageData;
 import hansung.capstone.dto.request.UpdateEmailRequest;
 import hansung.capstone.dto.request.UpdateNicknameRequest;
 import hansung.capstone.exception.NicknameExistsException;
@@ -89,9 +90,9 @@ public class MemberController {
      * @return ?
      */
     @PostMapping("/{studentId}/uploadStudentCard")
-    public ResponseEntity<?> uploadStudentCard(@PathVariable("studentId") String studentId) {
+    public ResponseEntity<?> uploadStudentCard(@PathVariable("studentId") String studentId, @RequestBody ImageData imageData) {
         try {
-            memberService.uploadStudentCard(studentId);
+            memberService.uploadStudentCard(studentId, imageData.getImageFile());
             return ResponseEntity.ok("학생증 사진이 업로드되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
