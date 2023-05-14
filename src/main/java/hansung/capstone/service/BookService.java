@@ -105,7 +105,23 @@ public class BookService {
     }
 
     public List<BookDTO> getAllBooks() {
-        return bookDAO.findAll();
+        List<BookDTO> books = bookDAO.findAll();
+
+        for (BookDTO book : books) {
+            Resource imageResource = getImage(book.getId());
+
+            if (imageResource != null && imageResource.exists()) {
+                try {
+                    byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
+                    String base64Image = Base64.getEncoder().encodeToString(imageData);
+                    book.setImageFile(base64Image);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to read image data", e);
+                }
+            }
+        }
+
+        return books;
     }
 
 }
