@@ -92,7 +92,7 @@ public class MemberController {
     @PostMapping("/{studentId}/uploadStudentCard")
     public ResponseEntity<?> uploadStudentCard(@PathVariable("studentId") String studentId, @RequestBody ImageData imageData) {
         try {
-            memberService.uploadStudentCard(studentId, imageData.getImageFile());
+            memberService.uploadStudentCard(studentId, imageData);
             return ResponseEntity.ok("학생증 사진이 업로드되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

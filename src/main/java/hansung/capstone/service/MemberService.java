@@ -131,13 +131,15 @@ public class MemberService {
     public void uploadStudentCard(String studentId, ImageData imageData) {
         MemberDTO member = dao.findByStudentId(studentId);
 
+        System.out.println("========" + imageData.getImageFile());
+
         String base64Image = imageData.getImageFile();
 
         if (base64Image != null && !base64Image.isEmpty()) {
             // 저장할 디렉토리 지정
             String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/member/";
             // 고유한 파일 이름 생성
-            String fileName = "image_" + member.getStudentId() + ".png";
+            String fileName = member.getStudentId() + ".png";
             Path path = Paths.get(uploadDir + fileName);
 
             // Base64를 디코딩하여 이미지를 저장
@@ -147,6 +149,7 @@ public class MemberService {
                 Files.write(path, decodedBytes);
                 // 파일 저장
                 member.setFileDir(path.toString());
+                member.setFile(true);
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("File saving failed", e);
