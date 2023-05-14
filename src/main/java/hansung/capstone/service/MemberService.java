@@ -2,26 +2,27 @@ package hansung.capstone.service;
 
 import hansung.capstone.dao.MemberDAO;
 import hansung.capstone.dto.MemberDTO;
-import hansung.capstone.dto.item.CustomFile;
 import hansung.capstone.dto.request.UpdateEmailRequest;
 import hansung.capstone.dto.request.UpdateNicknameRequest;
 import hansung.capstone.exception.NicknameExistsException;
 import hansung.capstone.exception.PasswordNotFoundException;
 import hansung.capstone.exception.StudentIdNotFoundException;
-import hansung.capstone.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class MemberService {
 
     private final MemberDAO dao;
 
-    private final FileUtil fileUtil;
+    private final ResourceLoader resourceLoader;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -126,44 +127,69 @@ public class MemberService {
      * @return void
      */
     @Transactional
-    public void uploadStudentCard(String studentId, MultipartFile file) throws StudentIdNotFoundException, FileUploadException {
+    public void uploadStudentCard(String studentId) {
         MemberDTO member = dao.findByStudentId(studentId);
 
-        if (member == null)
-            throw new StudentIdNotFoundException("존재하지 않는 학번입니다.");
+        String base64Image = member.getImageFile();
 
-        // 파일 저장 경로를 지정합니다.
-        String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/static/certification/";
-        String filename = studentId + ".png";
-        String fileOriName = file.getOriginalFilename();
-        String filePath = uploadDirectory + filename;
+        if (base64Image != null && !base64Image.isEmpty()) {
+            // 저장할 디렉토리 지정
+            String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/member/";
+            // 고유한 파일 이름 생성
+            String fileName = "image_" + member.getStudentId() + ".png";
+            Path path = Paths.get(uploadDir + fileName);
 
-        InputStream inputStream = null;
-        try {
-            // 파일을 지정된 경로에 저장합니다.
-            inputStream = file.getInputStream();
-            fileUtil.copy(inputStream, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new FileUploadException("파일 업로드 중 오류가 발생했습니다.", e);
-        } finally {
-            if (inputStream != null) {
+            // Base64를 디코딩하여 이미지를 저장
+            byte[] decodedBytes = Base64.getDecoder().decode(base64Image.split(",")[1]);
+
+            try {
+                Files.write(path, decodedBytes);
+                // 파일 저장
+                member.setFileDir(path.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("File saving failed", e);
+            }
+        }
+        dao.save(member);
+    }
+
+    public List<MemberDTO> getMemberAll() {
+        List<MemberDTO> members = dao.findAll();
+
+        for (MemberDTO member : members) {
+            Resource imageResource = getImage(member.getId());
+
+            if (imageResource != null && imageResource.exists()) {
                 try {
-                    inputStream.close();
+                    byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
+                    String base64Image = Base64.getEncoder().encodeToString(imageData);
+                    member.setImageFile(base64Image);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("Failed to read image data", e);
                 }
             }
         }
 
-        // 파일 정보를 MemberDTO 객체에 설정하고 저장합니다.
-        member.setFiles(new CustomFile(filename, fileOriName, filePath));
-        member.setFile(true);
-        dao.save(member);
+        return members;
     }
 
+    public Resource getImage(int id) {
+        MemberDTO member = dao.findById(id);
 
-    public List<MemberDTO> getMemberAll() {
-        return dao.findAll();
+        String fileDir = member.getFileDir();
+
+        if (fileDir == null || fileDir.isEmpty()) {
+            return null;
+        }
+
+        Resource imageResource = resourceLoader.getResource("file:" + fileDir);
+
+        if (!imageResource.exists()) {
+            return null;
+        }
+
+        return imageResource;
     }
 
 }

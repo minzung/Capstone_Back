@@ -8,11 +8,9 @@ import hansung.capstone.exception.PasswordNotFoundException;
 import hansung.capstone.exception.StudentIdNotFoundException;
 import hansung.capstone.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -91,14 +89,12 @@ public class MemberController {
      * @return ?
      */
     @PostMapping("/{studentId}/uploadStudentCard")
-    public ResponseEntity<?> uploadStudentCard(@PathVariable("studentId") String studentId, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadStudentCard(@PathVariable("studentId") String studentId) {
         try {
-            memberService.uploadStudentCard(studentId, file);
+            memberService.uploadStudentCard(studentId);
             return ResponseEntity.ok("학생증 사진이 업로드되었습니다.");
-        } catch (StudentIdNotFoundException e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (FileUploadException e) {
-            throw new RuntimeException(e);
         }
     }
 
