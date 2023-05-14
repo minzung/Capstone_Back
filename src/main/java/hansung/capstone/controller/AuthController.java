@@ -106,11 +106,7 @@ public class AuthController {
 
     @GetMapping("/all")
     public ResponseEntity<List<MemberDTO>> getMemberAll() {
-        try {
-            return ResponseEntity.ok(memberService.getMemberAll());
-        } catch (StudentIdNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        return ResponseEntity.ok(memberService.getMemberAll());
     }
 
 }
