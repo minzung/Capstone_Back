@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -98,6 +99,15 @@ public class AuthController {
     public ResponseEntity<MemberDTO> getMember(@PathVariable("studentId") String studentId) {
         try {
             return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
+        } catch (StudentIdNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<MemberDTO>> getMemberAll() {
+        try {
+            return ResponseEntity.ok(memberService.getMemberAll());
         } catch (StudentIdNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

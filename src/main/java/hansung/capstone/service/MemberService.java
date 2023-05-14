@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -154,4 +155,7 @@ public class MemberService {
     }
 
 
+    public List<MemberDTO> getMemberAll() {
+        return dao.findAll();
+    }
 }
