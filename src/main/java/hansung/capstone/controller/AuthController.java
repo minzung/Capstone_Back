@@ -91,15 +91,30 @@ public class AuthController {
     }
 
     /**
-     * 비밀번호 변경
-     * @param studentId, newPassword
+     * 인증 성공
+     * @param studentId
      * @return ?
      */
-    @PatchMapping("/{studentId}/certification")
+    @PatchMapping("/{studentId}/certification/success")
+    public ResponseEntity<?> updateSuccessCertification(@PathVariable("studentId") String studentId) {
+        try {
+            memberService.updateSuccessCertification(studentId);
+            return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
+        } catch (StudentIdNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    /**
+     * 인증 실패
+     * @param studentId
+     * @return ?
+     */
+    @PatchMapping("/{studentId}/certification/fail")
     public ResponseEntity<?> updateCertification(@PathVariable("studentId") String studentId) {
         try {
-            memberService.updateCertification(studentId);
-            return ResponseEntity.ok(memberService.getMemberByStudentId(studentId));
+            memberService.updateFailCertification(studentId);
+            return ResponseEntity.ok(memberService.updateFailCertification(studentId));
         } catch (StudentIdNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

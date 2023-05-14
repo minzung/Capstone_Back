@@ -79,10 +79,26 @@ public class MemberService {
         dao.save(member);
     }
 
-    public void updateCertification(String studentId) {
+    /**
+     * 인증 성공
+     * @param studentId
+     */
+    public void updateSuccessCertification(String studentId) {
         MemberDTO member = dao.findByStudentId(studentId);
 
         member.setCertification(true);
+        dao.save(member);
+    }
+
+    /**
+     * 인증 실패
+     * @param studentId
+     */
+    public void updateFailCertification(String studentId) {
+        MemberDTO member = dao.findByStudentId(studentId);
+
+        member.setFile(false);
+        member.setFileDir(null);
         dao.save(member);
     }
 
