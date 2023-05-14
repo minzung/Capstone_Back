@@ -23,7 +23,6 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +39,17 @@ public class MemberService {
 
         if(member == null)
             throw new StudentIdNotFoundException("존재하지 않는 학번입니다.");
+
+        Resource imageResource = getImage(member.getId());
+        if (imageResource != null && imageResource.exists()) {
+            try {
+                byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                member.setImageFile(base64Image);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to read image data", e);
+            }
+        }
 
         return dao.findByStudentId(studentId);
     }
@@ -147,8 +157,6 @@ public class MemberService {
     public void uploadStudentCard(String studentId, ImageData imageData) {
         MemberDTO member = dao.findByStudentId(studentId);
 
-        System.out.println("========" + imageData.getImageFile());
-
         String base64Image = imageData.getImageFile();
 
         if (base64Image != null && !base64Image.isEmpty()) {
@@ -165,6 +173,7 @@ public class MemberService {
                 Files.write(path, decodedBytes);
                 // 파일 저장
                 member.setFileDir(path.toString());
+                member.setImageFile(imageData.getImageFile());
                 member.setFile(true);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -179,7 +188,6 @@ public class MemberService {
 
         for (MemberDTO member : members) {
             Resource imageResource = getImage(member.getId());
-
             if (imageResource != null && imageResource.exists()) {
                 try {
                     byte[] imageData = StreamUtils.copyToByteArray(imageResource.getInputStream());
@@ -190,7 +198,6 @@ public class MemberService {
                 }
             }
         }
-
         return members;
     }
 
