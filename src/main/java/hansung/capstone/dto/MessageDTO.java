@@ -30,9 +30,6 @@ public class MessageDTO {
     @Column(name = "sendTime")
     private Timestamp sendTime; // 보낸 시간
 
-    @Column(name = "readTime")
-    private Timestamp readTime; // 읽은 시간
-
     @Column(name = "readCheck")
     private boolean readCheck;
 

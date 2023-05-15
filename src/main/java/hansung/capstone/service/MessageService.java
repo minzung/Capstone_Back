@@ -61,8 +61,16 @@ public class MessageService {
                 .orElse(null);
     }
 
+    @Transactional
     public List<MessageDTO> getRoomMessages(int roomId) {
-        return messageDAO.findByRoomIdOrderBySendTime(roomId);
+        List<MessageDTO> messages = messageDAO.findByRoomIdOrderBySendTime(roomId);
+        for (MessageDTO message : messages) {
+            if (!message.isReadCheck()) {
+                message.setReadCheck(true);
+                messageDAO.save(message);
+            }
+        }
+        return messages;
     }
 
     @Transactional
