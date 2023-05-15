@@ -61,13 +61,12 @@ public class MessageService {
                 .orElse(null);
     }
 
-    @Transactional
-    public List<MessageDTO> getRoomMessages(int roomId) {
+    public List<MessageDTO> getRoomMessages(int roomId, String studentId) {
         List<MessageDTO> messages = messageDAO.findByRoomIdOrderBySendTime(roomId);
         for (MessageDTO message : messages) {
-            if (!message.isReadCheck()) {
-                message.setReadCheck(true);
-                messageDAO.save(message);
+            if (studentId.equals(message.getReceiver())) {
+                message.setReadCheck(true); // readCheck 값을 true로 변경
+                messageDAO.save(message); // 변경된 메시지 저장
             }
         }
         return messages;

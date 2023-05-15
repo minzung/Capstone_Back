@@ -41,9 +41,9 @@ public class MessageController {
      * @param roomId
      * @return List<MessageDTO>
      */
-    @GetMapping("/room/{roomId}")
-    public ResponseEntity<List<MessageDTO>> getRoomMessages(@PathVariable int roomId) {
-        List<MessageDTO> messages = messageService.getRoomMessages(roomId);
+    @GetMapping("/room/{roomId}/{studentId}")
+    public ResponseEntity<List<MessageDTO>> getRoomMessages(@PathVariable int roomId, @PathVariable String studentId) {
+        List<MessageDTO> messages = messageService.getRoomMessages(roomId, studentId);
         return ResponseEntity.ok(messages);
     }
 

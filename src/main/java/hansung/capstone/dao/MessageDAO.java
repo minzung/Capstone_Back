@@ -16,6 +16,6 @@ public interface MessageDAO extends JpaRepository<MessageDTO, Integer> {
 
     List<MessageDTO> findByRoom(MessageRoomDTO room);
 
-    MessageDTO findByRoomId(int roomId);
+    MessageDTO findById(int roomId);
 
 }
