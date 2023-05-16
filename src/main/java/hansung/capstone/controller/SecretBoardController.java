@@ -75,10 +75,10 @@ public class SecretBoardController {
      * @param studentId, id
      * @return FreeBoardDTO
      */
-    @DeleteMapping("/{studentId}/{id}")
-    public ResponseEntity<?> deleteFreeBoard(@PathVariable("studentId") String studentId, @PathVariable("id") int id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSecretBoard(@PathVariable("id") int id) {
         try {
-            secretBoardService.deleteFreeBoard(studentId, id);
+            secretBoardService.deleteSecretBoard(id);
             return ResponseEntity.ok("게시글이 삭제되었습니다.");
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 게시글을 삭제할 수 있습니다.");

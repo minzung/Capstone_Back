@@ -167,15 +167,10 @@ public class SecretBoardService {
 
     /**
      * 게시글 삭제
-     * @param studentId, id
+     * @param id
      */
     @Transactional
-    public void deleteFreeBoard(String studentId, int id) {
-        SecretBoardDTO board = boardDAO.findById(id);
-
-        if(!Objects.equals(board.getStudentId(), studentId)) {
-            throw new IllegalStateException("작성자만 게시글을 삭제할 수 있습니다.");
-        }
+    public void deleteSecretBoard(int id) {
         boardDAO.deleteById(id);
         commentDAO.deleteByBoardId(id);
     }
