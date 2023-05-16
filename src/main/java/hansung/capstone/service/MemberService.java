@@ -102,7 +102,7 @@ public class MemberService {
         MemberDTO member = dao.findByStudentId(studentId);
 
         MessageDTO message = new MessageDTO();
-        message.setSender("관리자");
+        message.setSender("admin");
         message.setReceiver(studentId);
         message.setContent("안녕하세요 관리자입니다. 계정 학교 인증을 성공하셨습니다.");
 
@@ -122,7 +122,7 @@ public class MemberService {
         MemberDTO member = dao.findByStudentId(studentId);
 
         MessageDTO message = new MessageDTO();
-        message.setSender("관리자");
+        message.setSender("admin");
         message.setReceiver(studentId);
         message.setContent("안녕하세요 관리자입니다. 계정 학교 인증을 실패하셨습니다. 다시 인증해주세요");
 
