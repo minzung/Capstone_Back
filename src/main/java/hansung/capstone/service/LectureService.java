@@ -26,4 +26,8 @@ public class LectureService {
         return dao.findAll();
     }
 
+    public void deleteLecture(int id) {
+        dao.deleteById(id);
+    }
+
 }
