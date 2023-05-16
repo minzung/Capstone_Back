@@ -1,7 +1,9 @@
 package hansung.capstone.service;
 
 import hansung.capstone.dao.MemberDAO;
+import hansung.capstone.dao.MessageDAO;
 import hansung.capstone.dto.MemberDTO;
+import hansung.capstone.dto.MessageDTO;
 import hansung.capstone.dto.item.ImageData;
 import hansung.capstone.dto.request.UpdateEmailRequest;
 import hansung.capstone.dto.request.UpdateNicknameRequest;
@@ -29,6 +31,8 @@ import java.util.Objects;
 public class MemberService {
 
     private final MemberDAO dao;
+
+    private final MessageService messageService;
 
     private final ResourceLoader resourceLoader;
 
@@ -93,8 +97,17 @@ public class MemberService {
      * 인증 성공
      * @param studentId
      */
+    @Transactional
     public void updateSuccessCertification(String studentId) {
         MemberDTO member = dao.findByStudentId(studentId);
+
+        MessageDTO message = new MessageDTO();
+        message.setSender("관리자");
+        message.setReceiver(studentId);
+        message.setContent("안녕하세요 관리자입니다. 계정 학교 인증을 성공하셨습니다.");
+
+        // 메시지 서비스로 메시지 보내기
+        messageService.sendMessage(message);
 
         member.setCertification(true);
         dao.save(member);
@@ -104,8 +117,17 @@ public class MemberService {
      * 인증 실패
      * @param studentId
      */
+    @Transactional
     public void updateFailCertification(String studentId) {
         MemberDTO member = dao.findByStudentId(studentId);
+
+        MessageDTO message = new MessageDTO();
+        message.setSender("관리자");
+        message.setReceiver(studentId);
+        message.setContent("안녕하세요 관리자입니다. 계정 학교 인증을 실패하셨습니다. 다시 인증해주세요");
+
+        // 메시지 서비스로 메시지 보내기
+        messageService.sendMessage(message);
 
         member.setFile(false);
         member.setFileDir(null);
