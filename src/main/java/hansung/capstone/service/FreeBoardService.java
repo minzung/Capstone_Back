@@ -169,15 +169,10 @@ public class FreeBoardService {
 
     /**
      * 게시글 삭제
-     * @param studentId, id
+     * @param id
      */
     @Transactional
-    public void deleteFreeBoard(String studentId, int id) {
-        FreeBoardDTO freeboard = boardDAO.findById(id);
-
-        if(!Objects.equals(freeboard.getStudentId(), studentId)) {
-            throw new IllegalStateException("작성자만 게시글을 삭제할 수 있습니다.");
-        }
+    public void deleteFreeBoard(int id) {
         boardDAO.deleteById(id);
         commentDAO.deleteByBoardId(id);
     }
