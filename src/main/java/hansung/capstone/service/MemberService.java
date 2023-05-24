@@ -183,7 +183,7 @@ public class MemberService {
 
         if (base64Image != null && !base64Image.isEmpty()) {
             // 저장할 디렉토리 지정
-            String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/member/";
+            String uploadDir = "/home/ubuntu/Capstone_Back/src/main/resources/static/member/";
             // 고유한 파일 이름 생성
             String fileName = member.getStudentId() + ".png";
             Path path = Paths.get(uploadDir + fileName);
@@ -194,7 +194,7 @@ public class MemberService {
             try {
                 Files.write(path, decodedBytes);
                 // 파일 저장
-                member.setFileDir(path.toString());
+                member.setFileDir(uploadDir + fileName);
                 member.setImageFile(imageData.getImageFile());
                 member.setFile(true);
             } catch (IOException e) {

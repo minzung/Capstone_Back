@@ -70,23 +70,23 @@ public class SecretBoardService {
      */
     public SecretBoardDTO updateSecretBoard(String studentId, UpdateFreeBoardRequest updateFreeBoardRequest) throws IllegalAccessException {
         // 업데이트할 게시글을 가져옵니다.
-        SecretBoardDTO freeBoard = boardDAO.findById(updateFreeBoardRequest.getId());
+        SecretBoardDTO secretBoard = boardDAO.findById(updateFreeBoardRequest.getId());
 
         // studentId가 일치하는지 확인합니다.
-        if (!freeBoard.getStudentId().equals(studentId)) {
+        if (!secretBoard.getStudentId().equals(studentId)) {
             throw new IllegalAccessException("게시글을 수정할 권한이 없습니다.");
         }
 
         // 게시글을 수정합니다.
-        freeBoard.setTitle(updateFreeBoardRequest.getTitle());
-        freeBoard.setContent(updateFreeBoardRequest.getContent());
-        freeBoard.setAnonymous(updateFreeBoardRequest.getIsAnonymous());
+        secretBoard.setTitle(updateFreeBoardRequest.getTitle());
+        secretBoard.setContent(updateFreeBoardRequest.getContent());
+        secretBoard.setAnonymous(updateFreeBoardRequest.getIsAnonymous());
 
         // 이미지 파일 처리
         String base64Image = updateFreeBoardRequest.getImageFile();
         if (base64Image != null && !base64Image.isEmpty()) {
             // 저장할 디렉토리 지정
-            String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/secret/";
+            String uploadDir = "/home/ubuntu/Capstone_Back/src/main/resources/static/secret/";
 
             // 디렉토리 생성
             File directory = new File(uploadDir);
@@ -95,7 +95,7 @@ public class SecretBoardService {
             }
 
             // 고유한 파일 이름 생성
-            String fileName = "image_" + freeBoard.getStudentId() + System.currentTimeMillis() + ".png";
+            String fileName = "image_" + secretBoard.getStudentId() + System.currentTimeMillis() + ".png";
             Path path = Paths.get(uploadDir + fileName);
 
             // Base64를 디코딩하여 이미지를 저장
@@ -104,15 +104,17 @@ public class SecretBoardService {
             try {
                 Files.write(path, decodedBytes);
                 // 파일 저장
-                freeBoard.setFileDir(path.toString());
+                secretBoard.setFileDir(uploadDir + fileName);
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("File saving failed", e);
             }
+        } else {
+            secretBoard.setFileDir(null);
         }
 
         // 수정된 게시글을 저장합니다.
-        return boardDAO.save(freeBoard);
+        return boardDAO.save(secretBoard);
     }
 
     /**
